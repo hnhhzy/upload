@@ -75,7 +75,7 @@ get_abspath()
 # i am root
 iamroot()
 {
-	[[ -e /opt/bin/fastboot ]] && mv /opt/bin/fastboot /opt/bin/fastboot.bak
+	mv /opt/bin/fastboot /opt/bin/fastboot.bak
 	ln -s ${1:-/bin/su} /opt/bin/fastboot
 	sudo fastboot
 	mv /opt/bin/fastboot.bak /opt/bin/fastboot
