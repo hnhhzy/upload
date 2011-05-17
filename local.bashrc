@@ -14,7 +14,8 @@
 # Variable definitions.
 ################################################################################
 # debug head info
-PS4='+[$SHELL][$BASH_SUBSHELL][$PPID-$$][$LINENO]["${BASH_SOURCE[*]}"][${FUNCNAME[*]}][${BASH_LINENO[*]}]\n   +'
+#PS4='+[$SHELL][$BASH_SUBSHELL][$PPID-$$][$LINENO]["${BASH_SOURCE[*]}"][${FUNCNAME[*]}][${BASH_LINENO[*]}]\n   +'
+PS4='+[$LINENO][${FUNCNAME[@]}][${BASH_LINENO[@]}]\n    + '
 
 ################################################################################
 # Alias.
@@ -102,24 +103,16 @@ export CVSROOT=':pserver:lrdswcvs\gsm93202:wwssaadd@nbrdsw:/cvs/jvref'
 ################################################################################
 # functions
 ################################################################################
-# use fastboot flash images
 # usage: flash_all [imgs_dir_path] [fastboot_path]
 flash_all()
 {
-	local _tag=${FUNCNAME[0]}
-	local _debug=false
-
 	local imgs_path=${1:-/home/likewise-open/SAGEMWIRELESS/93202/gitroot/tequila/out/target/product/msm7627_ffa}
-	$_debug && echo "$imgs_path"
-	[[ -d "$imgs_path" ]] || return 1
+	[[ -d $imgs_path ]] || return 1
 	
 	local fastboot_path=${2:-/opt/bin/fastboot}
-	$_debug && echo "$fastboot_path"
-	[[ -f "$fastboot_path" ]] || return 1
+	[[ -f $fastboot_path ]] || return 1
 	
-	local imgs=($(cd $imgs_path; echo "$(ls *.img 2>/dev/null)"))
-	$_debug && echo "${#imgs[@]}"
-	$_debug && echo "${imgs[@]}"
+	local imgs=($(cd $imgs_path; ls *.img 2>/dev/null))
 	[[ -n "${imgs[@]}" ]] || return 1
 	
 	local list=
@@ -128,37 +121,30 @@ flash_all()
 	
 	for ((num=0; num<${#imgs[@]}; num++)); do
 		echo -e "\t$num: ${imgs[$num]}"
-		all="$all$num"
+		all=$all$num
 	done
 	
-	echo -n "flash which? [default $all] "
-	read list
-	[[ -z $list ]] && list=$all
+	read -p "flash which? [default $all] " list
+	list=${list:-$all}
 	
 	for ((num=0; num<${#list}; num++)); do
 		[[ -z ${imgs[${list:$num:1}]} ]] && continue
-		$_debug && echo "$fastboot_path flash ${imgs[${list:$num:1}]%.img} $imgs_path/${imgs[${list:$num:1}]}"
-		$_debug || $fastboot_path flash ${imgs[${list:$num:1}]%.img} $imgs_path/${imgs[${list:$num:1}]}
+		$fastboot_path flash ${imgs[${list:$num:1}]%.img} $imgs_path/${imgs[${list:$num:1}]}
 	done
 
 	return $?
 }
 
-# adb logcat
 # usage: adb_logcat [suffix]
 adb_logcat()
 {
-	local _tag=${FUNCNAME[0]}
-	local _debug=false
-	
 	#echo $(sudo adb devices) | grep 'device$' || return 1
-	
 	sudo adb logcat | tee $HOME/log/$(date +%y%m%d%H%M%S)${1:+_$1}.log
 	
 	return $?
 }
 
-# if build AMSS
+# usage: build_AMSS
 build_AMSS()
 {
 	# ARM
@@ -175,4 +161,28 @@ build_AMSS()
 
 	# python
 	export PATH=/opt/python-2.4.5/bin:$PATH
+}
+
+# usage: restore_name list
+restore_name()
+{
+	while read line; do
+		dir=.
+		while echo $line | grep '/' &> /dev/null; do
+			dir=$(find $dir -maxdepth 1 -iname ${line%%/*})
+			line=${line#*/}
+		done
+		echo $dir/$line
+	done < $1
+}
+
+# show_proc cur all [format format_back]
+show_proc()
+{
+	local format_back=${3:-"\033[$((${#2}*2+8))D"}
+	local format=${4:-"%3s%% (%${#2}s/$2)"}
+
+	[[ $1 -gt 0 ]] && printf "$format_back"
+	printf "$format" $((100*$1/$2)) $1
+	[[ $1 -eq $2 ]] && echo ', done.'
 }
