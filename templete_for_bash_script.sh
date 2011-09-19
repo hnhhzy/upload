@@ -10,7 +10,7 @@ templete_for_bash_script() {
 	local TAG=${TAG:-${FUNCNAME[0]}}
 
 	# TODO
-	$DEB && echo $TAG: Hello World!
+	$DBG && echo $TAG: Hello World!
 
 	return $?
 }
