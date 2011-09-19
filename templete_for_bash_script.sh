@@ -1,8 +1,5 @@
 #! /bin/bash
 
-# Global VARs
-unset TAG
-
 # A templete for bash script
 # usage: templete_for_bash_script
 templete_for_bash_script() {
@@ -18,5 +15,12 @@ templete_for_bash_script() {
 	return $?
 }
 
-# Main
-templete_for_bash_script "$@"
+# Script can be used as a program or a function
+if echo $0 | grep -v '^bash$' &> /dev/null; then
+
+	# Global VARs
+	unset TAG
+
+	# Main
+	templete_for_bash_script "$@"
+fi
