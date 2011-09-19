@@ -7,7 +7,7 @@ templete_for_bash_script() {
 	# Debug switcher & local TAG
 	# example: $DBG && echo $TAG:...
 	local DBG=true
-	local TAG=${TAG-${FUNCNAME[0]}}
+	local TAG=${TAG:-${FUNCNAME[0]}}
 
 	# TODO
 	$DEB && echo $TAG: Hello World!
