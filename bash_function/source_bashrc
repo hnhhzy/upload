@@ -1,0 +1,17 @@
+#! /bin/bash
+
+## Source bashrc(s) under BASHRC_PATH
+# usage: append this to .bashrc, set BASHRC_PATH an available path.
+BASHRC_PATH=''
+
+[[ -d $BASHRC_PATH ]] && {
+	# usage: source_bashrc [bashrc]
+	source_bashrc()
+	{
+		if [[ -z $1 ]]; then
+			echo "$(cd "$BASHRC_PATH"; find * -type f)"
+		else
+			[[ -f $BASHRC_PATH/$1 ]] && . "$BASHRC_PATH/$1"
+		fi
+	}
+}	
