@@ -1,0 +1,43 @@
+#! /bin/bash
+
+#set -x
+
+# A templete for bash script
+# usage: templete_for_bash_script
+templete_for_bash_script() {
+
+	# Debug switcher & local TAG
+	# example: $DBG && echo $TAG:...
+	local DBG=true
+	local TAG=${TAG:-${FUNCNAME[0]}}
+
+	local line=
+	local count=1
+	
+	while read line; do
+		if echo "$line" | grep '^<' | grep '>$' | grep -v '^<!' &>/dev/null; then
+			if echo "$line" | grep '^</' &>/dev/null; then
+				((--count))
+				printf "%${count}s%s\n" ' ' "$line" 
+				continue
+			elif echo "$line" | grep -v '/>$' &>/dev/null; then
+				printf "%${count}s%s\n" ' ' "$line" 
+				((++count))
+				continue
+			fi
+			printf "%${count}s%s\n" ' ' "$line" 
+		fi
+	done < $1 > final.html
+
+	return $?
+}
+
+# Script can be used as a program or a function
+if echo $0 | grep -v '^bash$' &> /dev/null; then
+
+	# Global VARs
+	unset TAG
+
+	# Main
+	templete_for_bash_script "$@"
+fi
