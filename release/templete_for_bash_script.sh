@@ -16,7 +16,8 @@ templete_for_bash_script() {
 }
 
 # Script can be used as a program or a function
-if echo $0 | grep -v '^bash$' &> /dev/null; then
+if echo $0 | grep -v -E '^[-]?bash' &> /dev/null; then
+	local section=
 
 	# Global VARs
 	unset TAG
