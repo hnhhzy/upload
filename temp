@@ -1,3 +1,0 @@
-PS4='+[$SHELL][$BASH_SUBSHELL][$PPID-$$][$LINENO]["${BASH_SOURCE[*]}"][${FUNCNAME[*]}][${BASH_LINENO[*]}]\n   +'
-date --date='yesterday' +%y%m%d%H%M%S
-${1:+_$1}

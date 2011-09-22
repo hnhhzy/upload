@@ -1,77 +1,77 @@
 #! /bin/bash
-#
-# Configuration for bash shell
-# 
-# Copyright (c) 2010-2011 by Zhh.
-# 
-# This is a configuration for bash shell.
-# Define some variables and functions.
-# 
-# Usage:
-#        source local.bashrc
 
 ################################################################################
 # Variable definitions.
 ################################################################################
 # debug head info
 #PS4='+[$SHELL][$BASH_SUBSHELL][$PPID-$$][$LINENO]["${BASH_SOURCE[*]}"][${FUNCNAME[*]}][${BASH_LINENO[*]}]\n   +'
-PS4='+[$LINENO][${FUNCNAME[@]}][${BASH_LINENO[@]}]\n    + '
+#PS4='+[$LINENO][${FUNCNAME[@]}][${BASH_LINENO[@]}]\n    + '
+
+
+
+
+
 
 
 ################################################################################
-# Alias.
+# FOR WORKING
+################################################################################
+################################################################################
+# alias & variables
+################################################################################
+# D430G
+export D430G='/media/Ubuntu'
+alias cdu="cd $D430G"
+
+# minicom
+[[ -x /home/likewise-open/SAGEMWIRELESS/93202/program/bin/minicom ]] && alias minicom='/home/likewise-open/SAGEMWIRELESS/93202/program/bin/minicom'
+
+# android
+[[ -x $D430G/Android/android-sdk-linux_x86/tools/android ]] && alias android="$D430G/Android/android-sdk-linux_x86/tools/android"
+
+# cvs root
+export CVSROOT=':pserver:lrdswcvs\gsm93202:wwssaadd@nbrdsw:/cvs/jvref'
+
+################################################################################
+# functions
+################################################################################
+
+
+
+
+
+
+
+
+# usage: restore_name list
+restore_name()
+{
+	while read line; do
+		dir=.
+		while echo $line | grep '/' &> /dev/null; do
+			dir=$(find $dir -maxdepth 1 -iname ${line%%/*})
+			line=${line#*/}
+		done
+		echo $dir/$line
+	done < $1
+}
+
+
+
+# kill pid by name
+kpbn()
+{
+	local line="$(echo "$(ps -e)" | grep "$1")"
+	local yon=
+	
+	echo "$line"
+	read yon
+	[[ $yon = y ]] && kill $(echo "$line" | cut -c -5 | sed 's; ;;g')
+}
+
+
 ################################################################################
 # cd
-alias cd..='cd ..'
-alias cd-='cd -'
-
-# pushd & popd
-#alias pu='pushd'
-#alias po='popd'
-
-################################################################################
-# Private function definitions.
-################################################################################
-
-
-################################################################################
-# Public function definitions.
-################################################################################
-# N U P of list
-# usage: list_nup file_a file_b
-list_nup()
-{
-	
-	if [[ -f "$1" ]] && [[ -f "$2" ]]; then
-		mkdir -p _${FUNCNAME[0]}_
-		cat "$1" "$2" | sort -u > _${FUNCNAME[0]}_/u
-		cat "$1" "$2" | sort | uniq -d > _${FUNCNAME[0]}_/n
-		cat "$1" _${FUNCNAME[0]}_/u | sort | uniq -u > _${FUNCNAME[0]}_/ap
-		cat "$2" _${FUNCNAME[0]}_/u | sort | uniq -u > _${FUNCNAME[0]}_/bp
-	fi
-
-	return $?
-}
-
-## Get absolute path of a file or a directory.
-# usage: get_abspath [file|dir]
-get_abspath()
-{
-	# cd a directory and pwd
-	if [[ -z "$1" ]]; then
-		echo "$(pwd)"
-	elif [[ -d "$1" ]]; then
-		echo "$(cd "$1"; pwd)"
-	elif [[ -f "$1" ]]; then
-		# file just under / has only one '/'
-		# $1 contains no '/' 2>/dev/null
-		[[ -n "${1%/*}" ]] && echo -n "$(cd ${1%/*} 2>/dev/null; pwd)"
-		echo "/${1##*/}"
-	fi
-
-	return $?
-}
-
 # b) function cd_func
 # This function defines a 'cd' replacement function capable of keeping,
 # displaying and accessing history of visited directories, up to 10 entries
@@ -131,37 +131,33 @@ cd_func ()
 }
 
 alias cd=cd_func
+alias cd..='cd ..'
+alias cd-='cd -'
 
+# adb
+if [[ $(uname) == Linux ]] && [[ $UID != 0 ]]; then
+	ADB='sudo adb'
+	alias adb='sudo adb'
+else
+	ADB='adb'
+fi
 
-################################################################################
-# FOR WORKING
-################################################################################
-################################################################################
-# alias & variables
-################################################################################
-# D430G
-export D430G='/media/Ubuntu'
-alias cdu="cd $D430G"
-
-# minicom
-[[ -x /home/likewise-open/SAGEMWIRELESS/93202/program/bin/minicom ]] && alias minicom='/home/likewise-open/SAGEMWIRELESS/93202/program/bin/minicom'
-
-# android
-[[ -x $D430G/Android/android-sdk-linux_x86/tools/android ]] && alias android="$D430G/Android/android-sdk-linux_x86/tools/android"
-
-# cvs root
-export CVSROOT=':pserver:lrdswcvs\gsm93202:wwssaadd@nbrdsw:/cvs/jvref'
-
-################################################################################
-# functions
-################################################################################
 # I am root
-iamroot()
+Iamroot()
 {
 	mv /opt/bin/fastboot /opt/bin/fastboot.bak
 	ln -s ${1:-/bin/su} /opt/bin/fastboot
 	sudo fastboot
 	mv /opt/bin/fastboot.bak /opt/bin/fastboot
+}
+
+# notify operation finish
+notify_finish()
+{
+	[[ -z $1 ]] && return 1
+	
+	gnome-osd-client -f "<message id='eros' hide_timeout='50000' osd_halignment='center' osd_vposition='center' osd_font='WenQuanYi Micro Hei 50'>$1</message>"
+	#notify-send "$1" -i /usr/share/pixmaps/gnome-debian.png
 }
 
 # usage: fastbooot [imgs_dir_path]
@@ -170,7 +166,7 @@ fastbooot()
 	local _tag=${_tag:-${FUNCNAME[0]}}
 
 	local FASTBOOT='/opt/bin/fastboot'
-	[[ ! -f $FASTBOOT ]] && { echo "$_tag: error: $FASTBOOT is invalid!!!"; return 1; }
+	[[ ! -x $FASTBOOT ]] && { echo "$_tag: error: $FASTBOOT is invalid!!!"; return 1; }
 	
 	local imgs_path=${1:-.}
 	[[ ! -d $imgs_path ]] && { echo "$_tag: error: $imgs_path is not a directory!!!"; return 1; }
@@ -201,22 +197,10 @@ fastbooot()
 		[[ -n ${imgs[${list:$num:1}]} ]] && $SUDO $FASTBOOT flash ${imgs[${list:$num:1}]%.img} $imgs_path/${imgs[${list:$num:1}]}
 	done
 
-	gnome-osd-client -f "<message id='eros' hide_timeout='50000' osd_halignment='center' osd_vposition='center' osd_font='WenQuanYi Micro Hei 50'>搞完了，赶紧拔了！</message>"
+	notify_finish '搞定收工！'
 
 	return $?
 }
-
-# usage: endless_adb_logcat [DIR]
-if false; then
-endless_adb_logcat()
-{
-	#echo $(sudo adb devices) | grep 'device$' || return 1
-	nautilus "${1:-/tmp}"
-	while true; do printf "\n\033[1;33mADB LOGCAT\033[0m\n"; adb logcat -vtime | tee "${1:-/tmp}"/$(date +%H_%M_%S).log; done
-	
-	return $?
-}
-fi
 
 # usage: build_AMSS
 build_AMSS()
@@ -236,50 +220,3 @@ build_AMSS()
 	# python
 	export PATH=/opt/python-2.4.5/bin:$PATH
 }
-
-# usage: restore_name list
-restore_name()
-{
-	while read line; do
-		dir=.
-		while echo $line | grep '/' &> /dev/null; do
-			dir=$(find $dir -maxdepth 1 -iname ${line%%/*})
-			line=${line#*/}
-		done
-		echo $dir/$line
-	done < $1
-}
-
-# show_proc cur all [format format_back]
-show_proc()
-{
-	local format_back=${3:-"\033[$((${#2}*2+8))D"}
-	local format=${4:-"%3s%% (%${#2}s/$2)"}
-
-	[[ $1 -gt 0 ]] && printf "$format_back"
-	printf "$format" $((100*$1/$2)) $1
-	[[ $1 -eq $2 ]] && echo ', done.'
-}
-
-# notify operation end
-notify_end()
-{
-	if [[ -z $1 ]]; then
-		gnome-osd-client -f "<message id='eros' hide_timeout='50000' osd_halignment='center' osd_vposition='center' osd_font='WenQuanYi Micro Hei 50'>搞定收工！</message>"
-	else
-		notify-send '刷搞定收工！' -i /usr/share/pixmaps/gnome-debian.png
-	fi
-}
-
-# kill pid by name
-kpbn()
-{
-	local line="$(echo "$(ps -e)" | grep "$1")"
-	local yon=
-	
-	echo "$line"
-	read yon
-	[[ $yon = y ]] && kill $(echo "$line" | cut -c -5 | sed 's; ;;g')
-}
-
-alias adb='sudo adb'
