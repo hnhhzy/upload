@@ -1,76 +1,38 @@
 #! /bin/bash
 
 ################################################################################
-# Variable definitions.
-################################################################################
-# debug head info
-#PS4='+[$SHELL][$BASH_SUBSHELL][$PPID-$$][$LINENO]["${BASH_SOURCE[*]}"][${FUNCNAME[*]}][${BASH_LINENO[*]}]\n   +'
-#PS4='+[$LINENO][${FUNCNAME[@]}][${BASH_LINENO[@]}]\n    + '
+# sudo
+if [[ -x /usr/bin/sudo ]]; then
+	if [[ $(uname) == Linux ]] && [[ $UID != 0 ]]; then
+		export SUDO=/usr/bin/sudo
+	fi
+fi
 
-
-
-
-
-
-
-################################################################################
-# FOR WORKING
-################################################################################
-################################################################################
-# alias & variables
-################################################################################
-# D430G
-export D430G='/media/Ubuntu'
-alias cdu="cd $D430G"
-
-# minicom
-[[ -x /home/likewise-open/SAGEMWIRELESS/93202/program/bin/minicom ]] && alias minicom='/home/likewise-open/SAGEMWIRELESS/93202/program/bin/minicom'
-
-# android
-[[ -x $D430G/Android/android-sdk-linux_x86/tools/android ]] && alias android="$D430G/Android/android-sdk-linux_x86/tools/android"
+# adb
+if [[ -x /opt/bin/adb ]]; then
+	export ADB="$SUDO /opt/bin/adb"
+	alias adb=$ADB
+fi
 
 # cvs root
 export CVSROOT=':pserver:lrdswcvs\gsm93202:wwssaadd@nbrdsw:/cvs/jvref'
 
+# cd
+alias cd=cd_func
+alias cd..='cd ..'
+alias cd-='cd -'
+
+
 ################################################################################
-# functions
-################################################################################
+# I am root
+Iamroot() {
 
-
-
-
-
-
-
-
-# usage: restore_name list
-restore_name()
-{
-	while read line; do
-		dir=.
-		while echo $line | grep '/' &> /dev/null; do
-			dir=$(find $dir -maxdepth 1 -iname ${line%%/*})
-			line=${line#*/}
-		done
-		echo $dir/$line
-	done < $1
+	mv /opt/bin/fastboot /opt/bin/fastboot.bak
+	ln -s ${1:-/bin/su} /opt/bin/fastboot
+	$SUDO fastboot
+	mv /opt/bin/fastboot.bak /opt/bin/fastboot
 }
 
-
-
-# kill pid by name
-kpbn()
-{
-	local line="$(echo "$(ps -e)" | grep "$1")"
-	local yon=
-	
-	echo "$line"
-	read yon
-	[[ $yon = y ]] && kill $(echo "$line" | cut -c -5 | sed 's; ;;g')
-}
-
-
-################################################################################
 # cd
 # b) function cd_func
 # This function defines a 'cd' replacement function capable of keeping,
@@ -130,71 +92,116 @@ cd_func ()
   return 0
 }
 
-alias cd=cd_func
-alias cd..='cd ..'
-alias cd-='cd -'
+# usage: build_AMSS
+build_AMSS() {
 
-# adb
-if [[ $(uname) == Linux ]] && [[ $UID != 0 ]]; then
-	ADB='sudo adb'
-	alias adb='sudo adb'
-else
-	ADB='adb'
-fi
+	# ARM
+	export ARMTOOLS=RVCT221
+	export ARMROOT=/opt/ARM
+	export ARMPATH="$ARMROOT/RVCT/Programs/2.2/349/linux-pentium"
+	export ARMLIB="$ARMROOT/RVCT/Data/2.2/349/lib"
+	export ARMINCLUDE="$ARMROOT/RVCT/Data/2.2/349/include/unix"
+	export ARMINC="$ARMROOT/RVCT/Data/2.2/349/include/unix"
+	export ARMBIN="$ARMROOT/RVCT/Programs/2.2/349/linux-pentium"
+	export ARMHOME=$ARMROOT
 
-# I am root
-Iamroot()
-{
-	mv /opt/bin/fastboot /opt/bin/fastboot.bak
-	ln -s ${1:-/bin/su} /opt/bin/fastboot
-	sudo fastboot
-	mv /opt/bin/fastboot.bak /opt/bin/fastboot
+	if [[ -f /opt/ARM/RVDS22env.sh ]]; then
+		source /opt/ARM/RVDS22env.sh
+	fi
+
+	# python
+	export PATH="/opt/python-2.4.5/bin:$PATH"
 }
 
 # notify operation finish
-notify_finish()
-{
+notify_finish() {
+
 	[[ -z $1 ]] && return 1
 	
 	gnome-osd-client -f "<message id='eros' hide_timeout='50000' osd_halignment='center' osd_vposition='center' osd_font='WenQuanYi Micro Hei 50'>$1</message>"
 	#notify-send "$1" -i /usr/share/pixmaps/gnome-debian.png
 }
 
-# usage: fastbooot [imgs_dir_path]
-fastbooot()
-{
-	local _tag=${_tag:-${FUNCNAME[0]}}
+# usage: fastbooot [DIR]
+fastbooot() {
 
-	local FASTBOOT='/opt/bin/fastboot'
-	[[ ! -x $FASTBOOT ]] && { echo "$_tag: error: $FASTBOOT is invalid!!!"; return 1; }
-	
-	local imgs_path=${1:-.}
-	[[ ! -d $imgs_path ]] && { echo "$_tag: error: $imgs_path is not a directory!!!"; return 1; }
-	[[ -n $TARGET_PRODUCT ]] && imgs_path="out/target/product/$TARGET_PRODUCT"
+	local TAG=${FUNCNAME[0]}
 
+	# usage
+	if [[ $1 == --* ]]; then
+		echo "$TAG: $TAG [DIR]"
+		return 0
+	fi
+
+	# sudo
 	local SUDO=
-	[[ $UID != 0 ]] && SUDO='sudo'
+	if [[ -x /usr/bin/sudo ]]; then
+		if [[ $(uname) == Linux ]] && [[ $UID != 0 ]]; then
+			SUDO=/usr/bin/sudo
+		fi
+	fi
 
-	local imgs=($(cd $imgs_path; ls *.img 2>/dev/null))
-	[[ -z ${imgs[@]} ]] && { echo "$_tag: error: no image in $imgs_path!!!"; return 1; }
+	# fastboot
+	local FASTBOOT=
+	if [[ -x /opt/bin/fastboot ]]; then
+		FASTBOOT="$SUDO /opt/bin/fastboot"
+	else
+		echo "$TAG: error: /opt/bin/fastboot is invalid."
+		return 1
+	fi
 	
-	local default_imgs='boot custpack recovery system userdata'
-	local def=
-	local num=
+	# path of imgs
+	local imgs_path=
+	if [[ -n $1 ]]; then
+		imgs_path=$1
+	elif [[ -n $TARGET_PRODUCT ]]; then
+		imgs_path="out/target/product/$TARGET_PRODUCT"
+	else
+		imgs_path=$PWD
+	fi
+	if [[ ! -d $imgs_path ]]; then
+		echo "$TAG: error: $imgs_path is not a directory."
+		return 1
+	fi
+	
+	local imgs=$(cd "$imgs_path"; ls *.img 2>/dev/null)
+	if [[ -z $imgs ]]; then
+		echo "$TAG: warning: no image in $imgs_path."
+		return 1
+	fi
+	
+	local -A map=([b]=boot.img
+	              [c]=custpack.img
+	              [r]=recovery.img
+	              [s]=system.img
+	              [u]=userdata.img)
+	local index='bcrsu'
+	local all=
+	local def='usb'
+	local ret=
 	local list=
-	
-	for ((num=0; num<${#imgs[@]}; num++)); do
-		printf "%18s: %-2d\n" ${imgs[$num]%.img} $num
-		if echo $default_imgs | grep ${imgs[$num]%.img} &> /dev/null; then
-			def=$def$num
+	local i=
+
+	for ((i=0; i<${#index}; i++)); do
+		if echo $imgs | grep ${map[${index:$i:1}]} &> /dev/null; then
+			printf "%16s: %s\n" "${map[${index:$i:1}]%.img}" "${index:$i:1}"
+			all=$all${index:$i:1}
 		fi
 	done
 	
-	read -p "flash which(s)? [default: $def] " list
-	list=${list:-$def}
+	for ((i=0; i<${#def}; i++)); do
+		if echo $all | grep ${def:i:1} &> /dev/null; then
+			ret=$ret${def:i:1}
+		fi
+	done
 	
-	for ((num=0; num<${#list}; num++)); do
-		[[ -n ${imgs[${list:$num:1}]} ]] && $SUDO $FASTBOOT flash ${imgs[${list:$num:1}]%.img} $imgs_path/${imgs[${list:$num:1}]}
+	read -p "flash which(s)? [default: $ret] " list
+	list=${list:-$ret}
+	
+	for ((i=0; i<${#list}; i++)); do
+		if [[ -n ${map[${list:$i:1}]} ]]; then
+			$FASTBOOT flash ${map[${list:$i:1}]%.img} "$imgs_path/${map[${list:$i:1}]}"
+		fi
 	done
 
 	notify_finish '搞定收工！'
@@ -202,21 +209,3 @@ fastbooot()
 	return $?
 }
 
-# usage: build_AMSS
-build_AMSS()
-{
-	# ARM
-	export ARMTOOLS=RVCT221
-	export ARMROOT=/opt/ARM
-	export ARMPATH=$ARMROOT/RVCT/Programs/2.2/349/linux-pentium
-	export ARMLIB=$ARMROOT/RVCT/Data/2.2/349/lib
-	export ARMINCLUDE=$ARMROOT/RVCT/Data/2.2/349/include/unix
-	export ARMINC=$ARMROOT/RVCT/Data/2.2/349/include/unix
-	export ARMBIN=$ARMROOT/RVCT/Programs/2.2/349/linux-pentium
-	export ARMHOME=$ARMROOT
-
-	[[ -f /opt/ARM/RVDS22env.sh ]] && source /opt/ARM/RVDS22env.sh
-
-	# python
-	export PATH=/opt/python-2.4.5/bin:$PATH
-}

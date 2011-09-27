@@ -1,3 +1,18 @@
+#! /bin/bash
+
+exit 0
+
+################################################################################
 PS4='+[$SHELL][$BASH_SUBSHELL][$PPID-$$][$LINENO]["${BASH_SOURCE[*]}"][${FUNCNAME[*]}][${BASH_LINENO[*]}]\n   +'
 date --date='yesterday' +%y%m%d%H%M%S
 ${1:+_$1}
+
+sed -i 's#aaaaa#ccccc#' file
+
+gnome-terminal -t "Wrapper: $1" --disable-factory -x $2/process_wrapper_gdb.sh "$@"
+
+set -e  # Fail this script as soon as a command fails -- fail early, fail fast
+
+(cat << EOF) | sed s/__DEVICE__/$DEVICE/g | sed s/__MANUFACTURER__/$MANUFACTURER/g > ../../../vendor/$MANUFACTURER/$DEVICE/overlay/packages/apps/Launcher2/res/layout/all_apps.xml
+...
+EOF
