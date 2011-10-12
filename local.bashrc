@@ -1,17 +1,27 @@
 #! /bin/bash
 
 ################################################################################
+# Find if a given shell program is available.
+#
+# $1: variable name
+# $2: program name
+#
+# Result: set $1 to the full path of the corresponding command
+#         or to the empty/undefined string if not available
+#
+find_progpath() { local p=$(which $2); [[ -n $p ]] && eval export CMD_$1="$p"; }
+
 # sudo
 if [[ -x /usr/bin/sudo ]]; then
 	if [[ $(uname) == Linux ]] && [[ $UID != 0 ]]; then
-		export SUDO=/usr/bin/sudo
+		export CMD_SUDO=/usr/bin/sudo
 	fi
 fi
 
 # adb
 if [[ -x /opt/bin/adb ]]; then
-	export ADB="$SUDO /opt/bin/adb"
-	alias adb=$ADB
+	export CMD_ADB="$CMD_SUDO /opt/bin/adb"
+	alias adb=$CMD_ADB
 fi
 
 # cvs root
@@ -29,7 +39,7 @@ Iamroot() {
 
 	mv /opt/bin/fastboot /opt/bin/fastboot.bak
 	ln -s ${1:-/bin/su} /opt/bin/fastboot
-	$SUDO fastboot
+	$CMD_SUDO fastboot
 	mv /opt/bin/fastboot.bak /opt/bin/fastboot
 }
 

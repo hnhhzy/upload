@@ -7,7 +7,7 @@ PS4='+[$SHELL][$BASH_SUBSHELL][$PPID-$$][$LINENO]["${BASH_SOURCE[*]}"][${FUNCNAM
 date --date='yesterday' +%y%m%d%H%M%S
 ${1:+_$1}
 
-sed -i 's#aaaaa#ccccc#' file
+sed -i 's#aaaaa#ccccc#' filename
 
 gnome-terminal -t "Wrapper: $1" --disable-factory -x $2/process_wrapper_gdb.sh "$@"
 
@@ -24,5 +24,63 @@ yes | for ((i=0; i<10; ++i)) do
 
 find . -name *.[chS]
 
-kernel/scripts/tags.sh
+hidden_prompt() {
+    unset output
+    prompt="$1"
+    outvar="$2"
+    while read -s -n 1 -p "$prompt" c; do \
+        if [ "x$c" = "x" ]; then \
+            break
+        fi
+        prompt='*'
+        output="${output}${c}"
+    done
+    echo
+    eval $outvar="$output"
+    unset output
+}
 
+sed -e 's#/bin#'$HOME'/bin#g' /etc/passwd | grep '/bin'
+
+echo 'aaaa' | md5sum | cut -d' ' -f1
+
+tail -F $TMPLOG
+
+if [ "$V" != 0 ] ; then
+    run () {
+        echo "## COMMAND: $@"
+        $@
+    }
+else
+    run () {
+        $@ >>$TMPLOG 2>&1
+    }
+fi
+
+mkdir -p "$DSTDIR" && (cd "$SRCDIR" && tar cf - *) | (tar xf - -C "$DSTDIR")
+
+# Find if a given shell program is available.
+# We need to take care of the fact that the 'which <foo>' command
+# may return either an empty string (Linux) or something like
+# "no <foo> in ..." (Darwin). Also, we need to redirect stderr
+# to /dev/null for Cygwin
+#
+# $1: variable name
+# $2: program name
+#
+# Result: set $1 to the full path of the corresponding command
+#         or to the empty/undefined string if not available
+#
+find_program ()
+{
+    local PROG
+    PROG=`which $2 2>/dev/null`
+    if [ -n "$PROG" ] ; then
+        if pattern_match '^no ' "$PROG"; then
+            PROG=
+        fi
+    fi
+    eval CMD_$1="$PROG"
+}
+
+sed -e 's/John/&, demonstrated/w tmp' -e 's/Alice/&, demonstrated/w tmp2' list

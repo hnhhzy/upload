@@ -6,19 +6,21 @@
 
 PROGRAM=$(basename "$0")
 
-[[ $1 == --* ]] && {
-	echo "$PROGRAM: $PROGRAM NAME"
-	exit 0
+usage ()
+{
+	echo "usage: $PROGRAM NAME"
+	return 0
 }
 
-if echo $1 | grep -v -E '^[a-zA-Z][a-zA-Z0-9_]*$' &> /dev/null; then
+if echo $1 | grep -qvE '^[a-zA-Z_][a-zA-Z0-9_]*$'; then
 	echo "$PROGRAM: Unavailable name!"
+	usage
 	exit 1
 fi
 
-[[ -e $1.sh ]] && { echo "$PROGRAM: File exists!"; exit 2; }
-if ! touch $1.sh &> /dev/null; then
-	echo "$PROGRAM: Cannot create $1.sh"
+if [[ -e $1.sh ]]; then
+	echo "$PROGRAM: File exists!"
+	usage
 	exit 2
 fi
 
@@ -30,34 +32,38 @@ cat << EOF > $1.sh
 #
 # TODO
 
-# usage: $1 # TODO
-$1() {
-
-	# Debug switcher & local TAG
-	# example: \$DBG && echo \$TAG:...
-	local DBG=true
+$1 ()
+{
+	# Verbose & TAG
+	local VBS=\${VBS:-true}
 	local TAG=\${TAG:-\${FUNCNAME[0]}}
 
-	[[ \$1 == --* ]] && {
-		echo "\$PRO: \$PRO" # TODO
-		return 0
-	}
-	
 	# TODO
 
 	return \$?
 }
 
 # Script can be used as a program or a function
-if echo \$0 | grep -v -E '^[-]?bash' &> /dev/null; then
+if echo \$0 | grep -qvE '^[-]?bash'; then
 
 	# Global VARs
 	PRO=\$(basename "\$0")
+	VBS=true
 	TAG=\$PRO
+
+	# Show usage
+	usage ()
+	{
+		cat << USAGE_END
+Usage: \$PRO 
+USAGE_END
+
+		return 0
+	}
 
 	# Main
 	$1 "\$@"
 fi
 EOF
 
-echo "$PROGRAM: Generate $1.sh done."
+echo "$PROGRAM: Bash script $1.sh generated."
