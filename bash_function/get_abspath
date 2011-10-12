@@ -1,20 +1,21 @@
 #! /bin/bash
-
-## Get absolute path of a file or a directory.
-# usage: get_abspath [file|dir]
-get_abspath()
-{
-	# cd a directory and pwd
-	if [[ -z "$1" ]]; then
-		echo "$(pwd)"
-	elif [[ -d "$1" ]]; then
-		echo "$(cd "$1"; pwd)"
-	elif [[ -f "$1" ]]; then
-		# file just under / has only one '/'
-		# $1 contains no '/' 2>/dev/null
-		[[ -n "${1%/*}" ]] && echo -n "$(cd ${1%/*} 2>/dev/null; pwd)"
-		echo "/${1##*/}"
+#
+# get_abspath - get absolute path of a file or a directory
+#
+# Usage:
+#           get_adspath PATH
+#
+#   @PATH: path should be available
+#
+get_abspath ()
+{		
+	if [[ -d $1 ]]; then
+		echo $(cd "$1"; pwd)
+	elif [[ -f $1 ]]; then
+		if [[ $1 == /* ]]; then
+			echo $(cd "${1%/*}"; pwd)/${1##*/}
+		else
+			echo $(cd "$(pwd)/${1%/*}"; pwd)/${1##*/}
+		fi
 	fi
-
-	return $?
 }
