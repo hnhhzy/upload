@@ -15,7 +15,7 @@ get_abspath ()
 		if [[ $1 == /* ]]; then
 			echo $(cd "${1%/*}"; pwd)/${1##*/}
 		else
-			echo $(cd "$(pwd)/${1%/*}"; pwd)/${1##*/}
+			echo $(cd "./${1%/*}" &>/dev/null; pwd)/${1##*/}
 		fi
 	fi
 }
