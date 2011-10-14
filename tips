@@ -80,7 +80,7 @@ find_program ()
             PROG=
         fi
     fi
-    eval CMD_$1="$PROG"
+    eval CMD_$1=\"$PROG\"
 }
 
 sed -e 's/John/&, demonstrated/w tmp' -e 's/Alice/&, demonstrated/w tmp2' list

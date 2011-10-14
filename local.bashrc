@@ -1,21 +1,29 @@
 #! /bin/bash
 
 ################################################################################
+# set PS1
+PS1='\[\033[0;33m\]\w\[\033[0m\]\$ '
+
+# go to /media/Ubuntu
+cd /media/Ubuntu
+
 # Find if a given shell program is available.
 #
-# $1: variable name
+# $1: suffix of variable name
 # $2: program name
 #
-# Result: set $1 to the full path of the corresponding command
+# Result: set CMD_$1 to the full path of the corresponding command
 #         or to the empty/undefined string if not available
 #
-find_progpath() { local p=$(which $2); [[ -n $p ]] && eval export CMD_$1="$p"; }
+find_progpath ()
+{
+	local p=$(which $2)
+	[[ -n $p ]] && eval export CMD_$1=\"$p\"
+}
 
 # sudo
-if [[ -x /usr/bin/sudo ]]; then
-	if [[ $(uname) == Linux ]] && [[ $UID != 0 ]]; then
-		export CMD_SUDO=/usr/bin/sudo
-	fi
+if [[ $(uname) == Linux ]] && [[ $UID != 0 ]]; then
+	find_progpath 'SUDO' 'sudo'
 fi
 
 # adb
@@ -29,77 +37,49 @@ export CVSROOT=':pserver:lrdswcvs\gsm93202:wwssaadd@nbrdsw:/cvs/jvref'
 
 # cd
 alias cd=cd_func
-alias cd..='cd ..'
-alias cd-='cd -'
-
 
 ################################################################################
 # I am root
-Iamroot() {
-
+Iamroot()
+{
 	mv /opt/bin/fastboot /opt/bin/fastboot.bak
 	ln -s ${1:-/bin/su} /opt/bin/fastboot
 	$CMD_SUDO fastboot
 	mv /opt/bin/fastboot.bak /opt/bin/fastboot
 }
 
-# cd
 # b) function cd_func
 # This function defines a 'cd' replacement function capable of keeping,
-# displaying and accessing history of visited directories, up to 10 entries
 # To use it, uncomment it, source this file and try 'cd --'.
-# acd_func 1.0.5, 10-nov-2004
-# Petar Marinov, http:/geocities.com/h2428, this is public domain
 cd_func ()
 {
-  local x2 the_new_dir adir index
-  local -i cnt
+	local arg index
 
-  if [[ $1 ==  "--" ]]; then
-    dirs -v
-    return 0
-  fi
+	if [[ $1 == --* ]]; then
+		dirs -v
+		return 0
+	fi
 
-  the_new_dir=$1
-  [[ -z $1 ]] && the_new_dir=$HOME
+	arg=${1:-$HOME}
 
-  if [[ ${the_new_dir:0:1} == '-' ]]; then
-    #
-    # Extract dir N from dirs
-    index=${the_new_dir:1}
-    [[ -z $index ]] && index=1
-    adir=$(dirs +$index)
-    [[ -z $adir ]] && return 1
-    the_new_dir=$adir
-  fi
+	#
+	# '~' has to be substituted by ${HOME}
+	[[ $arg == ~* ]] && arg=${HOME}${arg:1}
+	
+	if [[ $arg == -* ]]; then
+		#
+		# Extract dir N from dirs
+		index=${arg:1}
+		[[ -z $index ]] && index=1
+		arg=$(dirs +$index)
+		[[ -z $arg ]] && return 1
+	fi
 
-  #
-  # '~' has to be substituted by ${HOME}
-  [[ ${the_new_dir:0:1} == '~' ]] && the_new_dir="${HOME}${the_new_dir:1}"
+	#
+	# Now change to the new dir and add to the top of the stack
+	pushd "$arg" 1>/dev/null
 
-  #
-  # Now change to the new dir and add to the top of the stack
-  pushd "${the_new_dir}" > /dev/null
-  [[ $? -ne 0 ]] && return 1
-  the_new_dir=$(pwd)
-
-  #
-  # Trim down everything beyond 11th entry
-  popd -n +11 2>/dev/null 1>/dev/null
-
-  #
-  # Remove any other occurence of this dir, skipping the top of the stack
-  for ((cnt=1; cnt <= 10; cnt++)); do
-    x2=$(dirs +${cnt} 2>/dev/null)
-    [[ $? -ne 0 ]] && return 0
-    [[ ${x2:0:1} == '~' ]] && x2="${HOME}${x2:1}"
-    if [[ "${x2}" == "${the_new_dir}" ]]; then
-      popd -n +$cnt 2>/dev/null 1>/dev/null
-      cnt=cnt-1
-    fi
-  done
-
-  return 0
+	return $?
 }
 
 # usage: build_AMSS
@@ -139,44 +119,37 @@ fastbooot() {
 
 	# usage
 	if [[ $1 == --* ]]; then
-		echo "$TAG: $TAG [DIR]"
+		echo "usage: $TAG [DIR]"
 		return 0
 	fi
 
-	# sudo
-	local SUDO=
-	if [[ -x /usr/bin/sudo ]]; then
-		if [[ $(uname) == Linux ]] && [[ $UID != 0 ]]; then
-			SUDO=/usr/bin/sudo
-		fi
-	fi
-
 	# fastboot
-	local FASTBOOT=
+	local FASTBOOT
 	if [[ -x /opt/bin/fastboot ]]; then
-		FASTBOOT="$SUDO /opt/bin/fastboot"
+		FASTBOOT='/opt/bin/fastboot'
+		[[ $UID != 0 ]] && 	FASTBOOT="sudo $FASTBOOT"
 	else
-		echo "$TAG: error: /opt/bin/fastboot is invalid."
+		echo "$TAG: error: no /opt/bin/fastboot."
 		return 1
 	fi
 	
 	# path of imgs
-	local imgs_path=
+	local imgs_dir
 	if [[ -n $1 ]]; then
-		imgs_path=$1
+		imgs_dir=$1
 	elif [[ -n $TARGET_PRODUCT ]]; then
-		imgs_path="out/target/product/$TARGET_PRODUCT"
+		imgs_dir="out/target/product/$TARGET_PRODUCT"
 	else
-		imgs_path=$PWD
+		imgs_dir=$PWD
 	fi
-	if [[ ! -d $imgs_path ]]; then
-		echo "$TAG: error: $imgs_path is not a directory."
+	if [[ ! -d $imgs_dir ]]; then
+		echo "$TAG: error: $imgs_dir is not a directory."
 		return 1
 	fi
 	
-	local imgs=$(cd "$imgs_path"; ls *.img 2>/dev/null)
+	local imgs=$(cd "$imgs_dir"; ls *.img 2>/dev/null)
 	if [[ -z $imgs ]]; then
-		echo "$TAG: warning: no image in $imgs_path."
+		echo "$TAG: warning: no image in $imgs_dir."
 		return 1
 	fi
 	
@@ -210,7 +183,7 @@ fastbooot() {
 	
 	for ((i=0; i<${#list}; i++)); do
 		if [[ -n ${map[${list:$i:1}]} ]]; then
-			$FASTBOOT flash ${map[${list:$i:1}]%.img} "$imgs_path/${map[${list:$i:1}]}"
+			$FASTBOOT flash ${map[${list:$i:1}]%.img} "$imgs_dir/${map[${list:$i:1}]}"
 		fi
 	done
 
