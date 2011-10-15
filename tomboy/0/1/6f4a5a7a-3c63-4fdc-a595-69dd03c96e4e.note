@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<note version="0.3" xmlns:link="http://beatniksoftware.com/tomboy/link" xmlns:size="http://beatniksoftware.com/tomboy/size" xmlns="http://beatniksoftware.com/tomboy">
+  <title>Using Links in Tomboy</title>
+  <text xml:space="preserve"><note-content version="0.1">Using Links in Tomboy
+
+<link:broken>Notes</link:broken> in Tomboy can be linked together by highlighting text in the current <link:broken>note</link:broken> and clicking the <bold>Link</bold> button above in the toolbar.  Doing so will create a new note and also underline the <link:broken>note</link:broken>'s title in the current <link:broken>note</link:broken>.
+
+Changing the title of a <link:broken>note</link:broken> will update <link:broken>links</link:broken> present in other <link:broken>notes</link:broken>.  This prevents broken <link:broken>links</link:broken> from occurring when a <link:broken>note</link:broken> is renamed.
+
+Also, if you type the name of another <link:broken>note</link:broken> in your current <link:broken>note</link:broken>, it will automatically be linked for you.</note-content></text>
+  <last-change-date>2011-10-13T10:28:17.5944410+08:00</last-change-date>
+  <last-metadata-change-date>2011-10-13T10:28:17.5944410+08:00</last-metadata-change-date>
+  <create-date>2011-04-26T10:07:23.3895700+08:00</create-date>
+  <cursor-position>244</cursor-position>
+  <width>450</width>
+  <height>360</height>
+  <x>0</x>
+  <y>0</y>
+  <open-on-startup>False</open-on-startup>
+</note>
