@@ -7,23 +7,20 @@ PS1='\[\033[0;33m\]\w\[\033[0m\]\$ '
 # go to /media/Ubuntu
 cd /media/Ubuntu
 
-# Find if a given shell program is available.
-#
-# $1: suffix of variable name
-# $2: program name
-#
-# Result: set CMD_$1 to the full path of the corresponding command
-#         or to the empty/undefined string if not available
-#
-find_progpath ()
+# usage: find_program PROGNAME [VARNAME]
+find_program ()
 {
-	local p=$(which $2)
-	[[ -n $p ]] && eval export CMD_$1=\"$p\"
+	local p=$(which $1 2>/dev/null)
+	if [[ -z $2 ]]; then
+		echo $p
+	else
+		eval CMD_$2=\"$p\" # command 'eval' is not safe
+	fi
 }
 
 # sudo
 if [[ $(uname) == Linux ]] && [[ $UID != 0 ]]; then
-	find_progpath 'SUDO' 'sudo'
+	find_program 'sudo' 'SUDO'
 fi
 
 # adb
