@@ -13,10 +13,6 @@ gnome-terminal -t "Wrapper: $1" --disable-factory -x $2/process_wrapper_gdb.sh "
 
 set -e  # Fail this script as soon as a command fails -- fail early, fail fast
 
-(cat << EOF) | sed s/__DEVICE__/$DEVICE/g | sed s/__MANUFACTURER__/$MANUFACTURER/g > ../../../vendor/$MANUFACTURER/$DEVICE/overlay/packages/apps/Launcher2/res/layout/all_apps.xml
-...
-EOF
-
 yes | for ((i=0; i<10; ++i)) do
 		read -p 'aaaaa' line
 		#echo $line
@@ -56,31 +52,5 @@ else
         $@ >>$TMPLOG 2>&1
     }
 fi
-
-mkdir -p "$DSTDIR" && (cd "$SRCDIR" && tar cf - *) | (tar xf - -C "$DSTDIR")
-
-# Find if a given shell program is available.
-# We need to take care of the fact that the 'which <foo>' command
-# may return either an empty string (Linux) or something like
-# "no <foo> in ..." (Darwin). Also, we need to redirect stderr
-# to /dev/null for Cygwin
-#
-# $1: variable name
-# $2: program name
-#
-# Result: set $1 to the full path of the corresponding command
-#         or to the empty/undefined string if not available
-#
-find_program ()
-{
-    local PROG
-    PROG=`which $2 2>/dev/null`
-    if [ -n "$PROG" ] ; then
-        if pattern_match '^no ' "$PROG"; then
-            PROG=
-        fi
-    fi
-    eval CMD_$1=\"$PROG\"
-}
 
 sed -e 's/John/&, demonstrated/w tmp' -e 's/Alice/&, demonstrated/w tmp2' list
