@@ -1,6 +1,10 @@
 #! /bin/bash
 
-exit 0
+if echo $0 | grep -qvE '^[-]?bash'; then
+	exit 0
+else
+	return 0
+fi
 
 ################################################################################
 PS4='+[$SHELL][$BASH_SUBSHELL][$PPID-$$][$LINENO]["${BASH_SOURCE[*]}"][${FUNCNAME[*]}][${BASH_LINENO[*]}]\n   +'
@@ -8,10 +12,6 @@ date --date='yesterday' +%y%m%d%H%M%S
 ${1:+_$1}
 
 sed -i 's#aaaaa#ccccc#' filename
-
-gnome-terminal -t "Wrapper: $1" --disable-factory -x $2/process_wrapper_gdb.sh "$@"
-
-set -e  # Fail this script as soon as a command fails -- fail early, fail fast
 
 yes | for ((i=0; i<10; ++i)) do
 		read -p 'aaaaa' line
@@ -54,3 +54,12 @@ else
 fi
 
 sed -e 's/John/&, demonstrated/w tmp' -e 's/Alice/&, demonstrated/w tmp2' list
+
+# For a description of the file format, see the Users Guide
+# http://cygwin.com/cygwin-ug-net/using.html#mount-table
+
+# This is default anyway:
+# none /cygdrive cygdrive binary,posix=0,user 0 0
+
+# /tmp
+/cygdrive/r/TEMP /tmp vfat bind 0 0

@@ -4,9 +4,6 @@
 # set PS1
 PS1='\[\033[0;33m\]\w\[\033[0m\]\$ '
 
-# go to /media/Ubuntu
-cd /media/Ubuntu
-
 # usage: find_program PROGNAME [VARNAME]
 find_program ()
 {
@@ -20,7 +17,7 @@ find_program ()
 
 # sudo
 if [[ $(uname) == Linux ]] && [[ $UID != 0 ]]; then
-	find_program 'sudo' 'SUDO'
+	export CMD_SUDO=$(find_program sudo)
 fi
 
 # adb
@@ -35,14 +32,18 @@ export CVSROOT=':pserver:lrdswcvs\gsm93202:wwssaadd@nbrdsw:/cvs/jvref'
 # cd
 alias cd=cd_func
 
-################################################################################
 # I am root
-Iamroot()
+iamroot()
 {
-	mv /opt/bin/fastboot /opt/bin/fastboot.bak
-	ln -s ${1:-/bin/su} /opt/bin/fastboot
-	$CMD_SUDO fastboot
-	mv /opt/bin/fastboot.bak /opt/bin/fastboot
+	if [[ -e /opt/bin/fastboot.bak ]]; then
+		echo 'root permission locked !'
+		return 1
+	else
+		mv /opt/bin/fastboot /opt/bin/fastboot.bak
+		ln -s ${1:-/bin/su} /opt/bin/fastboot
+		$CMD_SUDO fastboot
+		mv /opt/bin/fastboot.bak /opt/bin/fastboot
+	fi
 }
 
 # b) function cd_func
@@ -52,12 +53,12 @@ cd_func ()
 {
 	local arg index
 
-	if [[ $1 == --* ]]; then
+	if [[ $1 == -- ]]; then
 		dirs -v
 		return 0
 	fi
 
-	arg=${1:-$HOME}
+	arg=${1:-/media/Ubuntu}
 
 	#
 	# '~' has to be substituted by ${HOME}
@@ -80,8 +81,8 @@ cd_func ()
 }
 
 # usage: build_AMSS
-build_AMSS() {
-
+build_AMSS ()
+{
 	# ARM
 	export ARMTOOLS=RVCT221
 	export ARMROOT=/opt/ARM
@@ -100,22 +101,23 @@ build_AMSS() {
 	export PATH="/opt/python-2.4.5/bin:$PATH"
 }
 
-# notify operation finish
-notify_finish() {
-
+# usage: alert MSG
+alert ()
+{
 	[[ -z $1 ]] && return 1
 	
-	gnome-osd-client -f "<message id='eros' hide_timeout='50000' osd_halignment='center' osd_vposition='center' osd_font='WenQuanYi Micro Hei 50'>$1</message>"
+	gnome-osd-client -f "
+		<message id='eros' hide_timeout='50000' osd_halignment='center' osd_vposition='center' osd_font='WenQuanYi Micro Hei 50'>$1</message>"
 	#notify-send "$1" -i /usr/share/pixmaps/gnome-debian.png
 }
 
 # usage: fastbooot [DIR]
-fastbooot() {
-
+fastbooot ()
+{
 	local TAG=${FUNCNAME[0]}
 
 	# usage
-	if [[ $1 == --* ]]; then
+	if [[ $1 == -- ]]; then
 		echo "usage: $TAG [DIR]"
 		return 0
 	fi
@@ -184,7 +186,7 @@ fastbooot() {
 		fi
 	done
 
-	notify_finish '搞定收工！'
+	alert '搞定收工！'
 
 	return $?
 }

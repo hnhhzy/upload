@@ -40,8 +40,7 @@ cat << EOF > $1.sh
 
 $1 ()
 {
-	# Verbose & TAG
-	local VBS=\${VBS:-true}
+	# TAG
 	local TAG=\${TAG:-\${FUNCNAME[0]}}
 
 	# TODO
@@ -54,7 +53,6 @@ if echo \$0 | grep -qvE '^[-]?bash'; then
 
 	# Global VARs
 	PRO=\$(basename "\$0")
-	VBS=true
 	TAG=\$PRO
 
 	# Show usage
