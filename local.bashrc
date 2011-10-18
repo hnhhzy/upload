@@ -98,7 +98,7 @@ build_AMSS ()
 	fi
 
 	# python
-	export PATH="/opt/python-2.4.5/bin:$PATH"
+	#export PATH="/opt/python-2.4.5/bin:$PATH"
 }
 
 # usage: alert MSG
