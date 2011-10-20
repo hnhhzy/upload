@@ -1,17 +1,11 @@
 #! /bin/bash
 
-if echo $0 | grep -qvE '^[-]?bash'; then
-	exit 0
-else
-	return 0
-fi
+exit 0
 
 ################################################################################
 PS4='+[$SHELL][$BASH_SUBSHELL][$PPID-$$][$LINENO]["${BASH_SOURCE[*]}"][${FUNCNAME[*]}][${BASH_LINENO[*]}]\n   +'
 date --date='yesterday' +%y%m%d%H%M%S
 ${1:+_$1}
-
-sed -i 's#aaaaa#ccccc#' filename
 
 yes | for ((i=0; i<10; ++i)) do
 		read -p 'aaaaa' line
@@ -36,8 +30,6 @@ hidden_prompt() {
     unset output
 }
 
-sed -e 's#/bin#'$HOME'/bin#g' /etc/passwd | grep '/bin'
-
 echo 'aaaa' | md5sum | cut -d' ' -f1
 
 tail -F $TMPLOG
@@ -52,8 +44,6 @@ else
         $@ >>$TMPLOG 2>&1
     }
 fi
-
-sed -e 's/John/&, demonstrated/w tmp' -e 's/Alice/&, demonstrated/w tmp2' list
 
 # For a description of the file format, see the Users Guide
 # http://cygwin.com/cygwin-ug-net/using.html#mount-table

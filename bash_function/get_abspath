@@ -5,7 +5,8 @@
 # Usage:
 #           get_adspath PATH
 #
-#   @PATH: path should be available
+#   Arguments:
+#     PATH: this should be available
 #
 get_abspath ()
 {		
