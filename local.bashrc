@@ -100,7 +100,7 @@ build_AMSS ()
 	local ver
 	# python
 	read -p "Choose version for phthon [d: $(python -V 2>&1 | cut -d' ' -f2); o: 2.4.5] " ver
-	[[ $ver == 2 ]] && export PATH="/opt/python-2.4.5/bin:$PATH"
+	[[ $ver == o ]] && export PATH="/opt/python-2.4.5/bin:$PATH"
 	python -V
 }
 
