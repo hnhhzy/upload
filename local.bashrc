@@ -109,8 +109,7 @@ alert ()
 {
 	[[ -z $1 ]] && return 1
 	
-	gnome-osd-client -f "
-		<message id='eros' hide_timeout='50000' osd_halignment='center' osd_vposition='center' osd_font='WenQuanYi Micro Hei 50'>$1</message>"
+	gnome-osd-client -f "<message id='eros' hide_timeout='50000' osd_halignment='center' osd_vposition='center' osd_font='WenQuanYi Micro Hei 50'>$1</message>"
 	#notify-send "$1" -i /usr/share/pixmaps/gnome-debian.png
 }
 

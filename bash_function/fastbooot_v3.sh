@@ -29,7 +29,7 @@ fastbooot ()
 	elif [[ -n $TARGET_PRODUCT ]]; then
 		imgs_dir="out/target/product/$TARGET_PRODUCT"
 	else
-		imgs_dir=$PWD
+		imgs_dir=.
 	fi
 	if [[ ! -d $imgs_dir ]]; then
 		echo "$TAG: error: $imgs_dir is not a directory."
@@ -42,11 +42,9 @@ fastbooot ()
 		return 1
 	fi
 
-	local -A namemap
 	local -A map
-	local -a names
 	local partname name all img
-	local xml='/media/Ubuntu/upload/map.xml'
+	local mapxml='/media/Ubuntu/upload/map.xml'
 
 	while read line; do
 		if echo $line | grep -q '<Partiton'; then
@@ -54,30 +52,17 @@ fastbooot ()
 			continue
 		elif echo $line | grep -q '<ImageName>'; then
 			name=$(echo $line | sed 's/[^>]*>//;s/<[^<]*//')
-			eval namemap[$name]=$partname
-			names=(${names[@]} $name)
+			for img in $imgs; do
+				if [[ $img == $name ]]; then
+					map[$img]=$partname
+					all="$all $img"
+				fi
+			done
 		fi
-	done < "$xml"
-
-	#echo ${names[@]}
-	#echo ${namemap[@]}
-
-	for name in ${names[@]}; do
-		for img in $imgs; do
-			if echo $img | grep -q "$name"; then
-				eval map[$img]=${namemap[$name]}
-				all="$all $img"
-				break
-			fi
-		done
-	done
-
-	#for img in $all; do
-	#	printf '%s: %s\n' $img $imgs_dir/${map[$img]}
-	#done
+	done < "$mapxml"
 
 	select img in $all; do
-		[[ -n $img ]] && echo $FASTBOOT flash ${map[$img]} $img
+		[[ -n $img ]] && echo $FASTBOOT flash ${map[$img]} "$imgs_dir/$img"
 	done
 
 	return $?
@@ -107,4 +92,40 @@ USAGE_END
 
 	# Main
 	fastbooot "$@"
+fi
+
+if [[ ! -r imagenamemap.xml ]] then
+	cat << XML_END > imagenamemap.xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<ImageNameMap>
+    <Partiton name="boot">
+        <ImageName>boot.img</ImageName>
+        <ImageName>BY???0??.mbn</ImageName>
+    </Partiton>
+    <Partiton name="system">
+        <ImageName>system.img</ImageName>
+        <ImageName>YY???0??.mbn</ImageName>
+    </Partiton>
+    <Partiton name="userdata">
+        <ImageName>userdata.img</ImageName>
+        <ImageName>UY???0??.mbn</ImageName>
+    </Partiton>
+    <Partiton name="recovery">
+        <ImageName>recovery.img</ImageName>
+        <ImageName>RY???0??.mbn</ImageName>
+    </Partiton>
+    <Partiton name="custpack">
+        <ImageName>custpack.img</ImageName>
+        <ImageName>MY??ZZ??.mbn</ImageName>
+    </Partiton>
+    <Partiton name="studypara">
+		<ImageName>studypara.mbn</ImageName>
+		<ImageName>SY????1S.mbn</ImageName>
+    </Partiton>
+    <Partiton name="securo">
+		<ImageName>security.mbn</ImageName>
+		<ImageName>XY??ZZ??.mbn</ImageName>
+    </Partiton>
+</ImageNameMap>
+XML_END
 fi
