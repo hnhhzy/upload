@@ -1,0 +1,15 @@
+"2.3.1 (created: 2010/04/07 18:25:13)
+
+cnoremap <C-v> <C-v><C-v>
+cnoremap <C-c> <C-v><C-c>
+inoremap <C-v> <C-v><C-v>
+inoremap <C-c> <C-v><C-c>
+noremap d <C-d>
+noremap e <C-u>
+noremap x d
+noremap <C-c> <C-v><C-c>
+set guioptions=rB
+set runtimepath=/home/likewise-open/SAGEMWIRELESS/93202/.vimperator
+source! /home/likewise-open/SAGEMWIRELESS/93202/.vimperatorrc.local
+
+" vim: set ft=vimperator:

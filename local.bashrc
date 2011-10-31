@@ -60,10 +60,6 @@ cd_func ()
 
 	arg=${1:-/media/Ubuntu}
 
-	#
-	# '~' has to be substituted by ${HOME}
-	[[ $arg == ~* ]] && arg=${HOME}${arg:1}
-	
 	if [[ $arg == -* ]]; then
 		#
 		# Extract dir N from dirs
@@ -72,6 +68,9 @@ cd_func ()
 		arg=$(dirs +$index)
 		[[ -z $arg ]] && return 1
 	fi
+	#
+	# '~' has to be substituted by ${HOME}
+	[[ $arg == ~* ]] && arg=${HOME}${arg:1}
 
 	#
 	# Now change to the new dir and add to the top of the stack
@@ -99,7 +98,7 @@ build_AMSS ()
 
 	local ver
 	# python
-	read -p "Choose version for phthon [d: $(python -V 2>&1 | cut -d' ' -f2); o: 2.4.5] " ver
+	read -p "Choose version for python [d]efault: $(python -V 2>&1 | cut -d' ' -f2); [o]ld: 2.4.5: " ver
 	[[ $ver == o ]] && export PATH="/opt/python-2.4.5/bin:$PATH"
 	python -V
 }
@@ -113,3 +112,14 @@ alert ()
 	#notify-send "$1" -i /usr/share/pixmaps/gnome-debian.png
 }
 
+# usage: repo_init ver/tequila/tequila_v94G_0
+repo_init ()
+{
+	local branch=${1##*\/}
+
+	mkdir $branch && \
+	cd $branch && \
+	echo $'\n\ny' | repo init -u git@172.16.11.162:platform_qcom/manifests.git -m $1.xml && \
+	repo sync && \
+	repo start $branch --all
+}
