@@ -1,29 +1,18 @@
 #! /bin/bash
 
-################################################################################
+######################################################################
 # set PS1
 PS1='\[\033[0;33m\]\w\[\033[0m\]\$ '
 
-# usage: find_program PROGNAME [VARNAME]
-find_program ()
-{
-	local p=$(which $1 2>/dev/null)
-	if [[ -z $2 ]]; then
-		echo $p
-	else
-		eval CMD_$2=\"$p\" # command 'eval' is not safe
-	fi
-}
-
-# sudo
-if [[ $(uname) == Linux ]] && [[ $UID != 0 ]]; then
-	export CMD_SUDO=$(find_program sudo)
+# hash
+if ! hash sudo 2>/dev/null; then
+	read -p "WARNING: command 'sudo' invalid"
 fi
 
 # adb
 if [[ -x /opt/bin/adb ]]; then
-	export CMD_ADB="$CMD_SUDO /opt/bin/adb"
-	alias adb=$CMD_ADB
+	export ADB='sudo /opt/bin/adb'
+	alias adb=$ADB
 fi
 
 # cvs root
@@ -41,7 +30,7 @@ iamroot()
 	else
 		mv /opt/bin/fastboot /opt/bin/fastboot.bak
 		ln -s ${1:-/bin/su} /opt/bin/fastboot
-		$CMD_SUDO fastboot
+		sudo fastboot
 		mv /opt/bin/fastboot.bak /opt/bin/fastboot
 	fi
 }
@@ -112,14 +101,14 @@ alert ()
 	#notify-send "$1" -i /usr/share/pixmaps/gnome-debian.png
 }
 
-# usage: repo_init ver/tequila/tequila_v94G_0
-repo_init ()
+# usage: repo_init_sync_start "$@"
+repo_init_sync_start ()
 {
-	local branch=${1##*\/}
+	local xml=${4##*/}
 
-	mkdir $branch && \
-	cd $branch && \
-	echo $'\n\ny' | repo init -u git@172.16.11.162:platform_qcom/manifests.git -m $1.xml && \
+	mkdir $xml && \
+	cd $xml && \
+	echo $'\n\ny' | repo init "$@" && \
 	repo sync && \
-	repo start $branch --all
+	repo start $xml --all
 }
