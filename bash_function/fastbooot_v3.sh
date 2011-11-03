@@ -44,10 +44,10 @@ fastbooot ()
 
 	local -A map
 	local partname name all img
-	local mapxml='/media/Ubuntu/upload/map.xml'
+	local mapxml='./imagenamemap.xml'
 
 	while read line; do
-		if echo $line | grep -q '<Partiton'; then
+		if echo $line | grep -q '<Partition'; then
 			partname=$(echo $line | cut -d\" -f2)
 			continue
 		elif echo $line | grep -q '<ImageName>'; then
@@ -92,40 +92,4 @@ USAGE_END
 
 	# Main
 	fastbooot "$@"
-fi
-
-if [[ ! -r imagenamemap.xml ]] then
-	cat << XML_END > imagenamemap.xml
-<?xml version="1.0" encoding="UTF-8" ?>
-<ImageNameMap>
-    <Partiton name="boot">
-        <ImageName>boot.img</ImageName>
-        <ImageName>BY???0??.mbn</ImageName>
-    </Partiton>
-    <Partiton name="system">
-        <ImageName>system.img</ImageName>
-        <ImageName>YY???0??.mbn</ImageName>
-    </Partiton>
-    <Partiton name="userdata">
-        <ImageName>userdata.img</ImageName>
-        <ImageName>UY???0??.mbn</ImageName>
-    </Partiton>
-    <Partiton name="recovery">
-        <ImageName>recovery.img</ImageName>
-        <ImageName>RY???0??.mbn</ImageName>
-    </Partiton>
-    <Partiton name="custpack">
-        <ImageName>custpack.img</ImageName>
-        <ImageName>MY??ZZ??.mbn</ImageName>
-    </Partiton>
-    <Partiton name="studypara">
-		<ImageName>studypara.mbn</ImageName>
-		<ImageName>SY????1S.mbn</ImageName>
-    </Partiton>
-    <Partiton name="securo">
-		<ImageName>security.mbn</ImageName>
-		<ImageName>XY??ZZ??.mbn</ImageName>
-    </Partiton>
-</ImageNameMap>
-XML_END
 fi
