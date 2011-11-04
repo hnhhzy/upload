@@ -1,29 +1,18 @@
 #! /bin/bash
 
-################################################################################
+######################################################################
 # set PS1
 PS1='\[\033[0;33m\]\w\[\033[0m\]\$ '
 
-# usage: find_program PROGNAME [VARNAME]
-find_program ()
-{
-	local p=$(which $1 2>/dev/null)
-	if [[ -z $2 ]]; then
-		echo $p
-	else
-		eval CMD_$2=\"$p\" # command 'eval' is not safe
-	fi
-}
-
-# sudo
-if [[ $(uname) == Linux ]] && [[ $UID != 0 ]]; then
-	export CMD_SUDO=$(find_program sudo)
+# hash
+if ! hash sudo 2>/dev/null; then
+	read -p "WARNING: command 'sudo' invalid"
 fi
 
 # adb
 if [[ -x /opt/bin/adb ]]; then
-	export CMD_ADB="$CMD_SUDO /opt/bin/adb"
-	alias adb=$CMD_ADB
+	export ADB='sudo /opt/bin/adb'
+	alias adb=$ADB
 fi
 
 # cvs root
@@ -41,7 +30,7 @@ iamroot()
 	else
 		mv /opt/bin/fastboot /opt/bin/fastboot.bak
 		ln -s ${1:-/bin/su} /opt/bin/fastboot
-		$CMD_SUDO fastboot
+		sudo fastboot
 		mv /opt/bin/fastboot.bak /opt/bin/fastboot
 	fi
 }
@@ -60,10 +49,6 @@ cd_func ()
 
 	arg=${1:-/media/Ubuntu}
 
-	#
-	# '~' has to be substituted by ${HOME}
-	[[ $arg == ~* ]] && arg=${HOME}${arg:1}
-	
 	if [[ $arg == -* ]]; then
 		#
 		# Extract dir N from dirs
@@ -72,6 +57,9 @@ cd_func ()
 		arg=$(dirs +$index)
 		[[ -z $arg ]] && return 1
 	fi
+	#
+	# '~' has to be substituted by ${HOME}
+	[[ $arg == ~* ]] && arg=${HOME}${arg:1}
 
 	#
 	# Now change to the new dir and add to the top of the stack
@@ -99,7 +87,7 @@ build_AMSS ()
 
 	local ver
 	# python
-	read -p "Choose version for phthon [d: $(python -V 2>&1 | cut -d' ' -f2); o: 2.4.5] " ver
+	read -p "Choose version for python [d]efault: $(python -V 2>&1 | cut -d' ' -f2); [o]ld: 2.4.5: " ver
 	[[ $ver == o ]] && export PATH="/opt/python-2.4.5/bin:$PATH"
 	python -V
 }
@@ -113,3 +101,14 @@ alert ()
 	#notify-send "$1" -i /usr/share/pixmaps/gnome-debian.png
 }
 
+# usage: repo_init_sync_start "$@"
+repo_init_sync_start ()
+{
+	local xml=${4##*/}
+
+	mkdir $xml && \
+	cd $xml && \
+	echo $'\n\ny' | repo init "$@" && \
+	repo sync && \
+	repo start $xml --all
+}
