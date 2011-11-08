@@ -9,7 +9,5 @@ noremap e <C-u>
 noremap x d
 noremap <C-c> <C-v><C-c>
 set guioptions=rB
-set runtimepath=/home/likewise-open/SAGEMWIRELESS/93202/.vimperator
-source! /home/likewise-open/SAGEMWIRELESS/93202/.vimperatorrc.local
 
 " vim: set ft=vimperator:
