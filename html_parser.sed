@@ -1,47 +1,95 @@
 #n
-/^[ \t]*<!--/{
-	s//@HTML_LC/1
+/^<!--/{
 :nc
 	/-->/!{
 		N
 		s/\n/@HTML_CR/1
 		b nc
 	}
-	s/-->/@HTML_RC/1
-	s/\(@HTML_RC\)\(.\)/\1@HTML_SEP\n\2/1
+	s/-->\(.\)/-->@HTML_SEP\n\1/1
 	P
 	D
 }
-/^[ \t]*<?/{
-	s//@HTML_LQM/1
+/^<?/{
 :nqm
 	/?>/!{
 		N
 		s/\n/@HTML_CR/1
 		b nqm
 	}
-	s/?>/@HTML_RQM/1
-	s/\(@HTML_RQM\)\(.\)/\1@HTML_SEP\n\2/1
+	s/?>\(.\)/?>@HTML_SEP\n\1/1
 	P
 	D
 }
-/^[ \t]*</{
-	s//@HTML_LAB/1
-	/^@HTML_LAB\//{
-		s/>/@HTML_RAB/1
-		s/\(@HTML_RAB\)\(.\)/\1@HTML_SEP\n\2/1
+/^<!/{
+:nss
+	/>/!{
+		N
+		s/\n/@HTML_CR/1
+		b nss
+	}
+	s/>\(.\)/>@HTML_SEP\n\1/1
+	P
+	D
+}
+/^</{
+:nes
+	/^[^'"]*>/{
+		s/>\(.\)/>@HTML_SEP\n\1/1
 		P
 		D
 	}
-	/^@HTML_LAB[A-Za-z][A-Za-z0-9]*[ \t][ \t]*/{
-		s/[ \t][ \t]*/@HTML_ATT/1
-:nes
-		/^[^=]*=[ \t]*['"]/!{
-			N
-			s/\n/@HTML_CR/1
-			b nes
-		}
-		/^[^=]*=[ \t]*"/{
-			s/"/@HTML_LQ/1
-		##########
+	/^[^"']*=[ \t]*"/!b iflqs
+	s/"/@HTML_QD/1
+:nrqd
+	/"/!{
+		N
+		s/\n/@HTML_CR/1
+		b nrqd
+	}
+	s/"/@HTML_RQD/1
+:rqs
+	/'.*@HTML_RQD/{
+		s/'\(.*@HTML_RQD\)/@HTML_QS\1/1
+		b rqs
+	}
+:rrab
+	/>.*@HTML_RQD/{
+		s/>\(.*@HTML_RQD\)/@HTML_RAB\1/1
+		b rrab
+	}
+	s/@HTML_RQD/@HTML_QD/1
+	b nes
+:iflqs
+	/^[^"']*=[ \t]*'/!{
+		N
+		s/\n/@HTML_CR/1
+		b nes
+	}
+	s/'/@HTML_QS/1
+:nrqs
+	/'/!{
+		N
+		s/\n/@HTML_CR/1
+		b nrqs
+	}
+	s/'/@HTML_RQS/1
+:rqd
+	/".*@HTML_RQS/{
+		s/"\(.*@HTML_RQS\)/@HTML_QD\1/1
+		b rqd
+	}
+:rrab
+	/>.*@HTML_RQS/{
+		s/>\(.*@HTML_RQS\)/@HTML_RAB\1/1
+		b rrab
+	}
+	s/@HTML_RQS/@HTML_QS/1
+	b nes
 }
+/</{
+	s//@HTML_SEP\n</1
+	P
+	D
+}
+p
