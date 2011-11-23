@@ -1,0 +1,6 @@
+" vimperator 3.3
+
+set hintchars=hjklasdfgyuiopqwertnmzxcvb
+
+nnoremap ga <C-p>
+nnoremap ge <C-n>

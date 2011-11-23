@@ -30,7 +30,8 @@ iamroot()
 	else
 		mv /opt/bin/fastboot /opt/bin/fastboot.bak
 		ln -s ${1:-/bin/su} /opt/bin/fastboot
-		sudo fastboot
+		shift
+		sudo fastboot "$@"
 		mv /opt/bin/fastboot.bak /opt/bin/fastboot
 	fi
 }
