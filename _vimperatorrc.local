@@ -18,3 +18,6 @@ nnoremap V <C-i>
 nnoremap e <C-u>
 nnoremap d <C-d>
 nnoremap x d
+
+" enable passthrough mode on some Google sites
+autocmd LocationChange .* js modes.passAllKeys = /mail\.google\.com/.test(buffer.URL) || /www\.google\.com\/reader\/view\//.test(buffer.URL)
