@@ -18,8 +18,12 @@ fi
 # cvs root
 export CVSROOT=':pserver:lrdswcvs\gsm93202:wwssaadd@nbrdsw:/cvs/jvref'
 
+# Android tools
+export PATH="/media/Ubuntu/opt/Android/android-sdk-linux_x86/tools:$PATH"
+
 # cd
-alias cd=cd_func
+#alias cd=cd_func
+alias cu='cd /media/Ubuntu'
 
 # I am root
 iamroot()
@@ -107,9 +111,9 @@ repo_init_sync_start ()
 {
 	local xml=${4##*/}
 
-	mkdir $xml && \
-	cd $xml && \
+	mkdir ${xml%.xml} && \
+	cd ${xml%.xml} && \
 	echo $'\n\ny' | repo init "$@" && \
 	repo sync && \
-	repo start $xml --all
+	repo start ${xml%.xml} --all
 }

@@ -64,6 +64,8 @@ fastbooot ()
 	select img in $all; do
 		[[ -n $img ]] && echo $FASTBOOT flash ${map[$img]} "$imgs_dir/$img"
 	done
+    
+    $FASTBOOT reboot
 
 	return $?
 }
