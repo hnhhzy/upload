@@ -53,3 +53,7 @@ fi
 
 # /tmp
 /cygdrive/r/TEMP /tmp vfat bind 0 0
+
+
+# show ASCII
+printf "%x\n" "'s"
