@@ -34,16 +34,5 @@ echo 'aaaa' | md5sum | cut -d' ' -f1
 
 tail -F $TMPLOG
 
-if [ "$V" != 0 ] ; then
-    run () {
-        echo "## COMMAND: $@"
-        $@
-    }
-else
-    run () {
-        $@ >>$TMPLOG 2>&1
-    }
-fi
-
 # show ASCII
 printf "%x\n" "'s"
