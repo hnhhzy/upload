@@ -36,3 +36,6 @@ tail -F $TMPLOG
 
 # show ASCII
 printf "%x\n" "'s"
+
+# gcc word in no-cygwin mode, click to run in Windows
+gcc -mno-cygwin -Wall rgb2bmp.c -o rgb2bmp
