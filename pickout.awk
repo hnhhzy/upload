@@ -2,7 +2,7 @@
 
 BEGIN {
 	if (ARGC < 2) {
-		printf("usage: extract d=DIR [s=STRIP] [FILE]\n");
+		printf("usage: pickout d=DIR [s=STRIP] [FILE]\n");
 		exit 1;
 	}
 	FS = "/";

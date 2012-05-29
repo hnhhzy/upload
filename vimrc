@@ -95,6 +95,12 @@ if !exists(":DiffOrig")
 		  \ | wincmd p | diffthis
 endif
 
-" set number
+set number
 set tabstop=4
 set shiftwidth=4
+
+" taglist
+let Tlist_Use_Right_Window = 1
+let Tlist_Exit_OnlyWindow = 1
+let Tlist_File_Fold_Auto_Close = 1
+nnoremap TT :TlistToggle<CR>
