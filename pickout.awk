@@ -10,7 +10,14 @@ BEGIN {
 
 $0 !~ /^[ \t]*#/ {
 	t = d;
-	if ($0 !~ /^\//) {
+	## git status -s
+	if ($0 ~ /^ M /) {
+		$0 = substr($0, 4);
+	} else if ($0 ~ /^\?\? /) {
+		$0 = substr($0, 4);
+	}
+	## git status -s 
+	else if ($0 !~ /^\//) {
 		$0 = ENVIRON["PWD"] "/" $0;
 	}
 	for (i = s + 1; i < NF; ++i) {
@@ -20,3 +27,4 @@ $0 !~ /^[ \t]*#/ {
 		system("cp -vur " $0 " " t "/" $NF);
 	}
 }
+
