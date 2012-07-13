@@ -1,6 +1,6 @@
 #! /bin/bash
 
-WLAN0_GW=172.16.135.254
+WLAN0_GW=172.16.134.254
 ETH0_GW=172.16.35.254
 
 route add default gw $WLAN0_GW dev wlan0
