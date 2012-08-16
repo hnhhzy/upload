@@ -16,17 +16,28 @@ fi
 # cvs root
 #export CVSROOT=':pserver:lrdswcvs\gsm93202:wwssaadd@nbrdsw:/cvs/jvref'
 
-# usage: repo_init_sync_start "$@"
-repo_init_sync_start ()
+# usage: repo_sync_from_local_repository -u git@172.16.11.162:platform_qcom/manifests.git -m [branch_name].xml
+repo_sync_from_local_repository ()
 {
-	local xml=${4##*/}
-	local tag=${xml%.xml}
+	local repository_dir=/media/Ubuntu/repository
 
-	which repo &>/dev/null && \
-	mkdir $tag && \
-	cd $tag && \
-	echo $'\n\ny' | repo init "$@" && \
-	repo sync && \
-	repo start $tag --all
+	local tmp=${4##*/}
+	local tag=${tmp%.xml}
+
+	tmp=${2##*:}
+	local repository=${tmp%%/*}
+
+	if which repo &>/dev/null; then
+		if [[ ! -d .repo ]]; then
+			mkdir -p $tag/.repo && \
+			cd $tag
+		fi
+		for i in manifests manifests.git projects repo; do
+			ln -sf $repository_dir/$repository/.repo/$i .repo/$i
+		done
+		echo $'\n\ny' | repo init "$@" && \
+		repo sync && \
+		repo start $tag --all
+	fi
 }
 
