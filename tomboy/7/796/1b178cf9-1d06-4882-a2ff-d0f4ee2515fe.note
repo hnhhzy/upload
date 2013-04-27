@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<note version="0.3" xmlns:link="http://beatniksoftware.com/tomboy/link" xmlns:size="http://beatniksoftware.com/tomboy/size" xmlns="http://beatniksoftware.com/tomboy">
+  <title>01/10/13</title>
+  <text xml:space="preserve"><note-content version="0.1">01/10/13
+
+<size:large>Task</size:large>
+
+
+<size:large>Achievement</size:large>
+
+
+<size:large>Message</size:large>
+
+
+Recommend reason
+在过去的一个季度里，工作积极主动，完成了如下重要工作：
+1，Poppy售后故障机分析：通过与BRCM的工程师协作，分析30多台故障机，解决了手机点不亮屏幕，刷机完无法启动，启动后重复在开机动画处循环等多个关键问题；并学习积累了相关差错分析的技术和经验。
+2，Red Bend FOTA的集成：负责升级包的安装和制作，充分利用了Android系统灵活的升级流程和Red Bend FOTA优秀的压缩算法，在QCOM8x30平台上开发了耦合度小，可扩展性好的FOTA代码。并为升级包的制作编写了脚本，减少了制作时间，提高了效率。
+3，及时解决了售后的紧急需求：检测手机是否被root，避免了Windows7系统手机切换到下载模式后弹出格式化的选框。
+4，协助并指导新员工的工作：有计划地引导新员工熟悉代码，及早转入开发阶段；解答新员工提出的问题，分享分析和处理问题的方法经验。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</note-content></text>
+  <last-change-date>2013-01-11T16:43:10.1128590+08:00</last-change-date>
+  <last-metadata-change-date>2013-01-11T16:43:10.1128590+08:00</last-metadata-change-date>
+  <create-date>2013-01-10T09:19:14.3295570+08:00</create-date>
+  <cursor-position>448</cursor-position>
+  <width>989</width>
+  <height>488</height>
+  <x>229</x>
+  <y>365</y>
+  <open-on-startup>False</open-on-startup>
+</note>

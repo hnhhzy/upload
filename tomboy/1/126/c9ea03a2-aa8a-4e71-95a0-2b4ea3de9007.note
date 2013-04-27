@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<note version="0.3" xmlns:link="http://beatniksoftware.com/tomboy/link" xmlns:size="http://beatniksoftware.com/tomboy/size" xmlns="http://beatniksoftware.com/tomboy">
+  <title>Tips</title>
+  <text xml:space="preserve"><note-content version="0.1">Tips
+
+<bold>#vi hex</bold><monospace>
+:%!xxd -g 1
+
+</monospace><bold>#mount a file as a loop device</bold><monospace>
+dd if=/dev/zero of=/data/fat.bin count=1024
+mkfs.vfat <link:url>/data/fat.bin</link:url></monospace><monospace>
+mkdir <link:url>/data/fat</link:url></monospace><monospace>
+mount -o loop -t vfat <link:url>/data/fat.bin</link:url></monospace><monospace> <link:url>/data/fat</link:url></monospace>
+
+</note-content></text>
+  <last-change-date>2012-03-12T17:31:11.6837780+08:00</last-change-date>
+  <last-metadata-change-date>2012-03-12T17:31:11.6837780+08:00</last-metadata-change-date>
+  <create-date>2012-03-12T15:58:07.6657330+08:00</create-date>
+  <cursor-position>188</cursor-position>
+  <width>706</width>
+  <height>408</height>
+  <x>0</x>
+  <y>0</y>
+  <open-on-startup>False</open-on-startup>
+</note>

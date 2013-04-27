@@ -9,5 +9,6 @@ route del default gw $ETH0_GW dev eth0
 route add -net 172.16.11.0 netmask 255.255.255.0 gw $ETH0_GW dev eth0
 route add -net 172.16.38.234 netmask 255.255.255.255 gw $ETH0_GW dev eth0
 route add -net 172.24.61.0 netmask 255.255.255.0 gw $ETH0_GW dev eth0
+route add -net 172.24.63.184 netmask 255.255.255.255 gw $ETH0_GW dev eth0
 
 route

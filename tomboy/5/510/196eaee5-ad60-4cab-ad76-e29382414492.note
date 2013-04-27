@@ -1,0 +1,1089 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<note version="0.3" xmlns:link="http://beatniksoftware.com/tomboy/link" xmlns:size="http://beatniksoftware.com/tomboy/size" xmlns="http://beatniksoftware.com/tomboy">
+  <title>Chinese</title>
+  <text xml:space="preserve"><note-content version="0.1">Chinese
+
+BRCM是这么说的，
+
+This means we need to turn on CP log by default? Now it is off by hardcode.
+User build should set propety persist.cplog.config=0 by default.
+
+And propety rename to persist.sys.cplog.config is more suitable.
+
+Could you attach whole patch to CSP?
+
+Thank you.
+
+
+<datetime>Friday, October 19, 10:45 AM</datetime>
+
+测试的时候，应该是刚开机，还没上电池，teleweb是开着的，检测到手机就去下载了
+
+这次重现从log上看应该是teleweb造成的其中有关于开始下载的log
+
+@Yuling.Huang 是否需要重刷软件再测？
+
+
+还没重现，据说用紧急下载线比较靠谱
+
+按照描述上来说solution2比solution1的优势是在不需要重刷软件
+只需要执行setprop就可以打开CPlog，启用dump等调试用功能
+执行setprop则需要root/system权限
+
+我觉得solution2应该先按照我们的需求先让BRCM完整的给出来
+然后在确定root只针对执行setprop还是有其他需求，比如调试的时候是否还有其他需要root的操作
+
+
+<datetime>Thursday, October 18, 9:45 AM</datetime>
+
+这个StatusBarService相关的代码是不是应该找相关的人去查一查，这块我们这边不熟悉，也不知道怎么加log比较有效，需要midware的同事协助看看
+
+1，solution的集成，还有通过AT命令关闭CP log这个需要BRCM提供最新的patch，需要督促他们提供
+2，验证和功耗需要等到集成后才能测试
+3，关于root后门的问题，"Peixin Dong" &lt;<link:url>pdong@broadcom.com</link:url>&gt;  让我联系 "Xihua Chen" &lt;<link:url>xihuac@broadcom.com</link:url>&gt; 咨询
+
+
+
+BRCM没有回复，你们也都在抄送列表里
+可以催一下
+
+想了解一下大家平时管理本地代码的习惯和方法
+例如以某个项目为例，下载什么版本的代码做开发调试，提交代码前下什么版本验证，最后提交代码时是否又下一份最新的代码提交
+等诸如此类的问题，大家分享一下经验，提高效率，避免不必要的折腾
+
+
+<datetime>Wednesday, October 17, 10:51 AM</datetime>
+
+没有什么特殊的测试方法，常规使用就行，不要去做fota升级，
+
+以下文件为补丁，可能版本上不一直，合代码的时候如有问题找我
+
+测试用的手机已焊有串口线，关于用串口抓log是否需要额外说明？不知道VAL的是如何操作的，我可以帮忙准备
+
+
+也就是说如果采用方案2，我们完全不需要重刷任何一个img，只需要留个后门去执行AT命令？
+而且不用考虑功耗问题。
+
+<datetime>Tuesday, October 16, 1:03 PM</datetime>
+
+我觉得就是这样的，总结的好！
+
+关于CSP546935，方案1和方案2我是这么理解的：
+
+方案1
+USER版本的手机，CPlog是关的，编译kernel的几个选项CONFIG_*=n
+我们需要打开CPlog，关闭crash重启，编译并刷入CONFIG_*=y的boot.img
+
+方案2
+CPlog是关的，编译kernel的几个选项CONFIG_*=n
+我们需要打开CPlog，设置属性persist.panic.<link:internal>dump</link:internal>.debug=1，编译并刷入CONFIG_*=y的boot.img
+
+方案2里设置属性persist.panic.<link:internal>dump</link:internal>.debug=1应该就是关闭crash重启
+
+是这么回事？
+
+
+<datetime>Monday, October 15, 5:09 PM</datetime>
+
+包工，这个优先批一下吧，3Q
+
+<link:url>/dev/block/platform/msm_sdcc.3/by-name/tunning</link:url>
+执行命令和以前一样
+如发送
+80 6e 00 00 6c 73
+执行ls命令，返回为
+80 6e 00 00 00 00 00 00
+后四个字节表示执行结果，全是0表示正确
+
+读取文件内容的命令有变化
+如发送
+80 6e 01 00 01 00 2f 69 6e 69 74 2e 74 61 72 67 65 74 2e 72 63
+第4，5两个字节用于指定从该文件多少偏移开始读取，一次读取2048个字节，偏移也是以2048为基本单位
+上面这句意思是读取文件/init.target.rc中第2049-4096字节的内容，即偏移为1个单位（01 00）
+返回结果是
+80 6E 01 00 00 08 6E 65 73 68 6F 74 0A ..... 
+第4，5两个字节表示实际读取到的字节数，第6个自己开始是内容，共2048个字节，无内容自动补零
+
+
+我提供一个测试软件，用adb命令push进手机测试一下
+
+adb shell mount -o <link:internal>remount</link:internal> /system
+adb push tct_diag <link:url>/system/bin</link:url>
+adb shell tct_diag
+
+有疑问回复我
+
+
+
+我们的filemanager不会去访问这个目录，第三方的或许可以
+eng版本可以adb shell进这个目录
+user版本无权限进这个目录
+
+这两个文件存在“ <link:url>/data/dontpanic</link:url>”
+
+<datetime>Thursday, October 11, 11:08 AM</datetime>
+fsck_msdos内存占满了，就都kill了
+
+检查SD卡，长时间未返回，相关代码在
+<link:url>mountVol@system/vold/volume.cpp</link:url>
+Fat::check(devicePath)
+
+
+<datetime>Friday, September 28, 10:34 AM</datetime>
+
+factory reset中，删除文件（不格式化）的效率
+我们在MojitoICS的emmc中做了测试：
+
+recovery模式下，创建10k个随机文件并写入随机数
+########################
+mkdir <link:url>/tmp/tmps</link:url>
+for((i = 0;i&lt;10000;i++)); do echo $RANDOM &gt; $(mktemp -p <link:url>/tmp/tmps</link:url>); done
+
+root@android:/data/media # time rm -r *
+    0m5.78s real     0m0.03s user     0m5.30s system
+########################
+删除10k个文件大致需要5.78s。
+
+
+我们格式化了整个emmc分区
+########################
+root@android:/ # time make_ext4fs <link:url>/dev/block/mmcblk0p14</link:url>                        
+the inodes num[87640] is too large than 60000,it can't be normal formated
+Creating filesystem with parameters:
+    Size: 1435893760
+    Block size: 4096
+    Blocks per group: 32768
+    Inodes per group: 5456
+    Inode size: 256
+    Journal blocks: 5477
+    Label: 
+    Blocks: 350560
+    Block groups: 11
+    Reserved block group size: 87
+Created filesystem with 11/60016 inodes and 9787/350560 blocks
+    0m2.95s real     0m0.00s user     0m0.17s system
+########################
+格式化整个emmc（1.6G）大约需要2.95s
+
+<datetime>Thursday, September 27, 10:31 AM</datetime>
+
+5台在反复播放动画界面的手机，对应版本
+
+这台手机boot和v144不一样，ABL也不同，其余4台手机我已经重刷了对应版本的boot
+
+在电脑上再排一次序，之前顺序不同据说是跟本地语言有关系。。。
+
+
+5台焊了串口的手机，启动到小机器人界面
+分别对应版本
+
+
+
+对应版本 v149_Band18_Sec_User_NoCplog_TP_NewFW
+
+
+朱工，5台手机焊完后麻烦请打个电话，内线491，我下去取，谢谢
+
+<datetime>Wednesday, September 26, 1:52 PM</datetime>
+
+4，ADB_Device设备号和手机BSN关联
+我试过可以将ADB设备号改动，我需要知道手机BSN保存在何处，如何读取
+
+5. 手机关机指令验证：因为手机是带有电池，测试完成后需要发送关机指令让手机关机
+这个要通过diag还是adb或者其他方式实现？
+
+
+另外，如果第4条做好后，是否还需要在BT/Wifi测试的时候使用diag？
+因为原本使用diag是因为无法通过adb区分两个设备，如果ADB设备号独立后，就可以区分了
+没有必要再使用diag，这个需要评估一下
+
+
+eng软件开机后挂载根文件系统和system分区读写
+根文件系统修改重启后改动失效了
+system分区改动后一直有效
+
+
+正好1G啊，纯粹是为了过CTS嘛，USERDATA也是
+
+<datetime>Tuesday, September 25, 9:08 AM</datetime>
+
+不好意思，写错了，是按照recovey_mmc.fstab里的
+
+find_mounted_volume_by_mount_point() 
+只是去确认指定的目录是否挂载了，不去关心挂载的是哪个设备啊
+
+如果该目录已经在/proc/mounts列表里，就表示挂载了
+否则就去按照vold.emmc.fstab里的挂载
+
+
+
+
+
+<highlight><datetime>Tuesday, August 14, 11:17 AM</datetime></highlight>
+
+压缩包内是加上的Broadcom的补丁，目的是在校准模式下禁止长按开机键8s关机
+
+
+<highlight><datetime>Monday, August 13, 1:09 PM</datetime></highlight>
+
+Medoc_lite在Win7下rndis免驱动修改方案
+
+重新编译boot.img
+
+然后找台电脑试试看
+
+kernel/common/drivers/usb/gadget_brcm/f_rndis.c
+
+/* interface descriptor: */
+
+static struct usb_interface_descriptor rndis_control_intf = {
+	.bLength =		sizeof rndis_control_intf,
+	.bDescriptorType =	USB_DT_INTERFACE,
+
+	/* .bInterfaceNumber = DYNAMIC */
+	/* status endpoint is optional; this could be patched later */
+	.bNumEndpoints =	1,
+	.bInterfaceClass =	USB_CLASS_COMM,
+	.bInterfaceSubClass =   USB_CDC_SUBCLASS_ACM,
+	.bInterfaceProtocol =   USB_CDC_ACM_PROTO_VENDOR,
+	/* .iInterface = DYNAMIC */
+};
+
+中
+	.bInterfaceClass =	USB_CLASS_COMM,
+	.bInterfaceSubClass =   USB_CDC_SUBCLASS_ACM,
+	.bInterfaceProtocol =   USB_CDC_ACM_PROTO_VENDOR,
+三项改成
+	.bInterfaceClass =	0xe0,
+	.bInterfaceSubClass =  0x01,
+	.bInterfaceProtocol =   0x03,
+
+
+
+开机输入C，进校准模式后在长按开机键
+
+我们是这么重现的，手机上电池，连接USB转串口线，用minicom发送串口命令C，手机进入校准模式，然后再长按开机键，手机震动并正常启动
+另外，在vT15的软件上测试，也可以重现的，但是poppy上进入校准模式后，长按开机键则仍停留在校准模式
+
+@Weifeng.Li
+@Yan.Li
+brcm_boot里的代码是怎么编译的？
+
+<datetime>Thursday, August 9, 10:27 AM</datetime>
+
+代码由Guobing.Miao批了
+发送失败
+我本地测试可以正常开机打电话发短信，并请贾工（Qiangli.Jia）测过功耗
+
+现代码已提交，Jingbin.Yan审批
+
+Bug我自己建的
+
+
+我就吐个槽，桥边IBM的广告牌纸糊般得倒了，微软大楼旁边三期工程的墙倒了，公司楼前垃圾桶的盖子不知道吹哪里去了
+这一刻我感到董存瑞，黄继光，邱少云，雷锋同志灵魂附体，我不是一个人在战斗
+
+呵呵
+
+@Xingming.Li
+下午我去找你帮忙演示/重现
+
+我们自己如何重现？
+
+932478
+wl1_sleep
+play weibo
+
+<highlight><datetime>Wednesday, August 8, 10:22 AM</datetime></highlight>
+
+可以用这个工具查看USB是高速还是满速，图片为实例
+
+<highlight><datetime>Tuesday, August 7, 11:20 AM</datetime></highlight>
+
+
+==============================================
+
+请二位帮忙生成
+
+请用这个，刚才的那个漏了一个修改，谢谢
+
+VAL测试100次左右，我们这边测试200+次，没有重现，至少概率大大减少
+
+附件
+
+由于座位调整，原网口为D1-54的非安全环境电脑移动到D1-56
+账户 93257-0
+密码 93257
+
+目前无法连网，请帮忙解决，谢谢
+
+
+我估计三星手机是这么搞的，我改了代码试试，userdata和internalSD共用空间
+
+但是可能还有不少其他问题，需要评估一下
+
+我手头上有手机，可以看现象
+
+
+补开离职证明
+
+尤伟强委托我找你补开一份离职证明，请问需要什么手续和证件？
+
+尤伟强说打电话咨询过你。
+
+谢谢。
+
+对不住，发错了
+
+
+超时是在pc端设置的吧
+
+
+
+
+
+radio
+246 32
+246 33 0/1
+
+bt
+246 39
+246 40 0/1/2/3
+
+wifi
+246 53
+246 54 0/1
+
+
+主要有3个新变化
+
+平台8x30启动流程变化
+Flash由nand换成emmc
+Android系统由2.3升级到4.0
+
+这些都可能block住，保守估计3个月吧
+
+
+
+复用仓库，用现有的仓库，同步到指定的分支，节省硬盘空间节约下载时间
+预先有一个仓库，比如
+SAGEMWIRELESS\93202@50773-1 <link:url>/media/Ubuntu/src/platform_qcom/.repo</link:url>
+$ l
+manifests/  manifests.git/  projects/  repo/
+
+正常我们拉新工程代码的流程，比如
+$ mkdir aeneas_duralife_vK35_0
+$ cd aeneas_duralife_vK35_0
+$ repo init -u <link:url>git@172.16.11.162:platform_qcom/manifests.git</link:url> -m ver/aeneas/aeneas_duralife_vK35_0.xml
+$ repo sync
+$ repo start aeneas_duralife_vK35_0 --all
+这样会重新完整下载一个仓库
+
+用脚本一步到位
+$ repo_new_from_present_repository -u <link:url>git@172.16.11.162:platform_qcom/manifests.git</link:url> -m ver/aeneas/aeneas_duralife_vK35_0.xml
+关键在aeneas_duralife_vK35_0目录下自建.repo文件夹，然后把四个目录
+manifests/  manifests.git/  projects/  repo/
+链接到该文件夹下
+
+本质上是因为git仓库是可以共用，我发现工程里的.git也是自建文件夹，比如
+$ cd build/.git
+$ l
+config@  description@  HEAD  hooks@  index  info@  logs@  objects@  packed-refs@  refs@  rr-cache@  svn@
+其他文件（夹）都是链接，只有HEAD，index两个是普通文件，这两个应该类似.repo目录下的manifest.xml和project.list
+所以不同的工程有自己独立的代码，不会因为其他工程切换分支导致混乱
+
+当然复用仓库会导致本地分支过多，看起来有点乱，但是方便追溯自己的改动和提交
+$ repo branch
+   medoc_lite                | not in:
+                                   <link:internal>poppy</link:internal>_wimdata_ng/wcustores
+                                   <link:internal>poppy</link:internal>_wimdata_ng/wlanguage
+                                   <link:internal>poppy</link:internal>_wimdata_ng/wprocedures
+                                   <link:internal>poppy</link:internal>_wimdata_ng/wtheme
+                                   <link:internal>poppy</link:internal>_wimdata_ng/wtime
+*  <link:internal>poppy</link:internal>                     | in all projects
+
+
+另外，一般我们会每周随周软件的发布更新一次本地的工程，全新编译
+现在可以这样，比如
+aeneas_duralife_vK35_0要更新到aeneas_duralife_vK36_0
+$ cd aeneas_duralife_vK35_0/
+$ rm -rf *
+$ repo_init_sync_from_present_repository -u <link:url>git@172.16.11.162:platform_qcom/manifests.git</link:url> -m ver/aeneas/aeneas_duralife_vK36_0.xml
+
+
+<highlight><datetime>Tuesday, August 14, 11:32 AM</datetime></highlight>
+
+<highlight><datetime>Wednesday, August 15, 9:47 AM</datetime></highlight>
+
+请帮忙签个名，谢谢
+
+313959
+MINI / can't access to normal test mode when long press power on key
+.
+Please chose the bug root cause:
+    1-Unknown_Today
+    2-Architecture
+    3-Specification
+    4-Design
+    5-Coding
+    6-Regression
+    7-Evolution
+Your choise:4
+Module_Impact:boot2
+.
+Test_Suggestion:Long press power key in Calibration mode.
+.
+Solution:Disable long press shutdown in Calibration mode.
+.
+Test_Report:Ok.
+
+把你的改的代码发我瞧瞧？
+system/vold/目录下的就行
+
+<highlight><datetime>Thursday, August 16, 1:08 PM</datetime></highlight>
+
+<link:url>http://tieba.baidu.com/p/1786127269</link:url>
+
+我给的改动，仅验证可以使用，是否有其他问题，比如Mingmao.Luo说的会不会有商业纠纷之类的，我不清楚
+
+另外，MojitoICS上的相关的代码是作过类似修改的
+
+Jinbo.Zhang可以去催Broadcom给一个明确的回复
+要怎么搞？
+如果不知道，那么用我的改法有没有所谓的其他问题？
+让他们给出方案
+
+<highlight><datetime>Friday, August 17, 1:49 PM</datetime></highlight>
+
+版本关于测试用差分包升级失败的BUG
+
+我已经更新了RedBand服务器上做测试包的脚本
+
+请Yanghuang.Ding重新生成6个基于vFUS的测试用包
+请Hui.Xie稍候再测试
+
+谢谢
+
+
+为方便USER版本FOTA测试，请求集成ENG上的测试应用程序
+
+<link:url>http://bugzilla.tcl-ta.com/show_bug.cgi?id=309969</link:url>
+
+为了方便今后USER版本的软件测试差分包，希望能把ENG版本上的一个应用也集成到USER版本上，可以做成一个隐藏的应用，在拨号界面通过拨特殊字串调出
+
+这样可以在本地先验证zip格式的差分包，确保正确再上传并联网测试
+
+该应用在这个路径下
+
+需要在下一个版本的mini软件上验证
+
+<highlight><datetime>Monday, August 20, 1:25 PM</datetime></highlight>
+
+我觉得这个会，Guobing.Miao也应该参与进来
+
+ 
+用于在recovery下验证的改动
+
+这个是基于Aeneas改的，我想Venus的代码应该差不错
+
+<highlight><datetime>Tuesday, August 21, 9:43 AM</datetime></highlight>
+
+在ENG版本的软件上测试差分包，可以使用应用AlphaFOTA
+本地验证的时候可以直接选择zip文件进行升级
+
+但是在USER版本的软件上没有集成AlphaFOTA这个应用
+为了方便差分包（zip格式）生成后本地测试，修改了recovery.c的代码
+测试人员可以按照如下操作验证
+1，将生成的zip格式差分包放入SD卡根目录，路径应该是/sdcard/xxx.zip
+2，手机刷入指定版本的软件
+3，插入SD卡并启动进入recovery模式
+Venus-usc是按住HOME键开机
+Aeneas_duralife是按住音量上键开机
+4，进入选项
+apply update from sdcard
+就可以选择SD卡中的zip文件，升级过程中屏幕会显示很多E带头的LOG
+升级后手机会有1-2次重启
+整个过程完成后可以查看版本号
+5，所有需要测试的zip包都按照以上过程执行
+
+
+这个修改我提交到了FOTA移植的BUG上去了
+
+验证（测试）
+
+目前生成的差分包一般有两种格式：zip（未签名），xml（签名）
+后者上传到服务器，用于在线升级
+前者可以用来在本地验证差分包的正确性
+因此最好能在上传服务器前首先在本地验证差分包
+
+在ENG版本的软件上验证差分包，可以使用应用AlphaFOTA
+进入选项
+Update from SD card
+选择SD卡中的zip文件进行升级
+
+但是在USER版本的软件上没有集成AlphaFOTA这个应用
+为了方便差分包（zip格式）生成后本地测试，修改了recovery的流程（aeneas的代码已提交）
+
+测试人员可以按照如下操作验证
+1，将生成的zip格式差分包放入SD卡根目录，路径应该是/sdcard/xxx.zip
+2，手机刷入指定版本的软件
+3，插入SD卡并启动进入recovery模式
+Venus-usc是按住HOME键开机
+Aeneas_duralife是按住音量上键开机
+4，进入选项
+apply update from sdcard
+就可以选择SD卡中的zip文件，升级过程中屏幕会显示很多E带头的LOG
+升级后手机会有1-2次重启
+整个过程完成后可以查看版本号
+5，所有需要测试的zip包都按照以上过程执行
+
+每次生成差分包后，先本地验证zip包，验证通过后再交由VAL的同事进行在线测试
+或者由VAL的同事按照以上方法验证zip，再进行在线测试
+
+
+这个问题还是上回说的，出现的时候能不能看看（可能还有其他原因）
+是高速还是满速
+是否USB线松动
+是否更新驱动后重现
+是否换台电脑重现
+高通电话中给的回复说这一现象原因很多，需要排查
+
+没有特意去重现，出现这个状况一般是手机adb打开关闭的时候，正常情况下没有留意
+
+第二条
+2.对于custpack 和 udisk 功能上的合用，如果在分区定义上（rawpagram.xml）上还是分开的，这对HDT工具应该不会有影响
+
+合用的方法是userdata和udisk共用一个分区的空间，这个分区是最后一个分区
+在rawpagram.xml上定义
+
+首先创建一个udisk.bin
+
+挂载这个镜像到一个目录
+
+往这个目录里添加一些文件，注意权限
+
+卸载该目录
+
+将这个udisk.bin刷到手机里
+
+fastboot flash mdm udisk.bin
+
+udisk.bin预置文件
+
+case 00861045 指导如何创建udisk.bin
+case 00955001 指导如何预置文件，等回复
+
+
+<highlight><datetime>Wednesday, August 22, 1:14 PM</datetime></highlight>
+
+最新的mini软件vT19已经集成了Broadcom的补丁，我手动测试了一下，没有重现
+
+Cheng.Chen有测试结果吗？
+
+
+MojitoICS上两个分区，恢复出厂设置时会将两个分区都擦除
+FAT
+
+
+<highlight><datetime>Thursday, August 23, 1:14 PM</datetime></highlight>
+
+我修改的文件是kernel/common/kernel/power/earlysuspend.c
+只需要生成boot.img
+
+请告知Yuling.Huang指出的版本如何下载，编译，签名
+
+谢谢
+
+请帮忙编译，谢谢
+
+
+
+
+Liu Jie, Zhang He, Zhang hanling, Shi haojun, Chen Zhiming, Zheng Hongfang
+
+各位，关于这个PPT，请鼎立支持，畅所欲言
+
+以下三条请在自己熟悉/专长的模块/领域提供相应的意见，我汇总一下，谢谢！
+
+1，在8x27/8x30上我们的开发或优化（针对该点）；
+2，目前可见的需要高通技术支持的点（需要阅读高通文档或代码）；
+3，其它需要Highlight给高通的点；
+
+
+
+1，修改分区表
+amss_8x25/modem_proc/vendor/tct/scribe5/build/partition_load_pt/partition.xml
+
+&lt;extended order="8" type="83" label="CUSTPACK" size="819200" readonly="false"&gt;
+    &lt;file name="custpack.img.ext4" offset="0" appsbin="true"/&gt;
+&lt;/extended&gt;
+
+
+2，修改bootloader识别分区，主要用于fastboot刷机
+bootable/bootloader/lk/platform/msm_shared/partition_parser.c
+
+char *ext3_partitions[] =
+    { "system", "custpack", "persist", "cache", "userdata", "tombstones" };
+
+
+3，修改分区的挂载
+system/core/rootdir/init.rc
+device/tct/scribe5/fstab.msm7627a
+device/tct/scribe5/init.target.rc
+device/tct/scribe5/recovery.fstab
+
+
+添加custpack分区及分区调整
+
+
+
+<highlight><datetime>Monday, August 27, 9:31 AM</datetime></highlight>
+
+
+触屏死，底下四按键振动，电源键可关屏，但不能激活，侧键拍照无响应
+
+
+
+project aeneas_duralife
+PR 309969
+correct scripts for generating diff packages
+
+project <link:internal>poppy</link:internal>
+PR 316764
+created Broadcom case and to catch more logs
+
+project scribe5
+FR 318606
+memory partition setup 
+
+
+三个压缩分别是：
+8.25整天有效的log
+8.27现象重现的log
+重现后用在电脑上抓的log
+
+Yuling.Huang回忆，此bug发生在8.25下午4点37或52左右，重点可以看8.25的
+
+今天早上我看到的现象是：
+phone，launcher，settings先后force close
+接着触屏无反应，底下四个触摸键触摸有振动，电源键可关屏，但不能激活，侧键拍照键无响应
+只能重启
+
+
+小组成员变动：
+Zhiming.Chen 换成 Hongxing.Li
+Hongfang.Zheng 换成 Zhipiao.Pan
+
+帮我修改了一下，Hanling.Zhang 提供了宝贵意见
+
+参考了 Jiaxi.Wang 的PPT
+
+写得很少，请指正
+
+
+试试这个，我在Ubuntu和Windows（WPS）下都能打开
+
+
+
+这些是WIFI的LOG吗？重复出现，这是在干什么？
+
+
+再早一些时候的LOG，只有kernel的，没有Android的log
+
+
+
+企业文化
+
+
+
+
+
+
+
+
+
+<highlight><datetime>Thursday, August 30, 11:30 AM</datetime></highlight>
+
+1，internal sdcard无法使用USB mass storage功能
+   但external sdcard可以使用USB mass storage功能（如果需要）
+2，factory reset会格式化/data目录，internal sdcard使用的是/data下的一个子目录
+   所以也会通通格式化掉
+   如果要保留internal sdcard内容，可以有两种方法
+   一种是备份到SD卡
+   另一种是按照包工说的，不格式化/data，只是删除文件，这个不知道效率如何
+   
+实际
+
+
+
+恢复出厂设置，就是这个意思，
+
+
+准确的讲，internal sdcard 应该叫 embedded storage
+这部分不可卸载，恢复出厂设置也应该格式化掉
+
+本地备份的实现，应该参照Android原有的设计
+
+
+<highlight><datetime>Friday, August 31, 9:40 AM</datetime></highlight>
+
+保存到SD卡上，不要漏了引号
+LOG就保存在SD卡里的dmesg.txt文件中
+
+
+如果SD放满了，删除kmsg.txt，再重新执行
+
+
+<highlight><datetime>Monday, September 3, 9:54 AM</datetime></highlight>
+
+刚才从SD拷出来的LOG
+
+内网常用的链接
+
+代码仓库
+<link:url>http://172.16.11.162/</link:url>
+
+提交代码审批
+<link:url>http://172.16.11.162:8081</link:url>
+
+bug库
+<link:url>http://bugzilla.tcl-ta.com/</link:url>
+
+
+这个截图和跟我们描述的情况不一样啊
+
+从截图上看，
+
+我看了下现象
+
+没有Storage volumes是因为Storage volumes和diag被当作一个设备
+这次是被当成一个diag，按图所示手动更新该设备，就可以自动分裂成两个设备
+分别装上驱动
+这个原因应该是以前安装的驱动有冲突
+有一个INF文件里有VID_05C6&amp;PID_9006，估计是mojito用的驱动
+
+问问上海的同事能否想办法结局
+
+但是Bingliang.Ou图上原本应该显示为USB Composite Device的却显示成ALCATAL字样，我就不明白了
+
+
+1，MojitoICS在下载模式下，diag和storage会被识别成一个设备（可能由于已安装过Mojito的驱动）
+2，原本应该显示为USB Composite Device的却显示成ALCATAL字样
+
+这两个问题怎么解？
+
+
+这个补丁是哪个？可以发我们一下吗？
+卸载原来的驱动，用的是uninstall程序吗？如果不是用install安装的，有没有方法可以卸载干净？
+
+
+
+81466.313812
+50604.083404
+
+
+Broadcom给了一个patch，我已经加到此文件中，请
+
+
+
+scribe5 AMSS 分区大小问题
+QRD 释放的版本中，AMSS 分区占用400M，实际刷入该分区的镜像fat.bin只会占用200M
+约摸200M空间未使用
+而目前AMSS编译出来的文件（amss.mbn + amsshd.mbn）只有20M不到，这样在fat.bin中的200M空间又有150M多未用
+总共约350M浪费
+
+在MojitoICS上目前AMSS仅占用60M
+
+需要询问这样的划分出于什么原因？是否可以适当减小？今后如果AMSS编译出来大小增加，又需要预留多少？
+
+已建 case 316539
+分区表
+
+<highlight><datetime>Wednesday, September 5, 10:38 AM</datetime></highlight>
+
+由于新员工入职，导致共用电脑位置变更，无法连接内网，请帮忙解决
+
+网卡地址 00-1E-90-78-4A-33
+网口 D1-40
+
+账户 sagemwireless\92488
+
+lease chose the bug root cause:
+    1-Unknown_Today
+    2-Architecture
+    3-Specification
+    4-Design
+    5-Coding
+    6-Regression
+    7-Evolution
+Your choise:1
+Module_Impact:kernel, suspend &amp; resume
+.
+Test_Suggestion:Press power key to light on screen.
+.
+Solution:Patch from Broadcom CSP562704                     
+.
+Test_Report:Never reproduct. 
+
+目前还是没法联网，网络连接显示断开，类似于网线断开的状态
+
+
+<highlight><datetime>Thursday, September 6, 4:33 PM</datetime></highlight>
+
+双网卡动态路由
+
+1. 插网卡
+2. 断开本地连接
+3. 无线网络验证
+4. 连接本地连接
+5. root权限运行脚本
+6. 如果中途无线网络重连，重新执行脚本
+
+更多用法，可以看 man route
+
+
+<highlight><datetime>Tuesday, September 11, 1:32 PM</datetime></highlight>
+
+
+这三个是关于SD卡升级的提交，这个算是学习完分区表的一个应用，看看代码
+
+
+关于下载发现两个问题，
+
+1，紧急下载模式无法下载，缺少盘符
+参考标题为   “mojito  ICS下载驱动的问题”  中的解决方案
+
+2，Teleweb QCT_ICS_Simlock 下载会移植卡在如图界面
+
+
+<highlight><datetime>Friday, September 14, 10:36 AM</datetime></highlight>
+
+工具设置
+
+Source Insight
+
+Options --&gt; Document Options
+
+Font Options
+选择合适的字体和字体大小
+显示代码的字体应该选择等宽字体，即字母i和O显示宽度一样的字体，美观，方便对齐
+字体名字后带Mono的一般都是等宽字体
+
+Editing Options
+Expand tabs 应该勾上，tab字符会自动替换成n个空格，n由Tab width决定（一般为4）
+Show line numbers 应该勾上，作为程序员你难道要自己数行数？
+Visible tab 可以勾上，用于显示tab字符
+Show right margin 可以勾上会在代码右侧n个字符后显示一条竖线，n由Margin width决定（一般为80）
+每行字数最好不要超，字数太多，就要拖动水平滚动条了
+
+其他选项随意
+
+
+Gedit
+
+Edit --&gt; Preferences
+
+照我这样设置也行，随个人喜好
+
+
+Eclipse
+
+有个格式化代码的功能，但是不尽如人意
+
+
+Vi/Vim
+
+主用这个的都是牛人，应该都会配置
+
+
+
+注意，Makefile文件（比如*.mk，*.min)里的tab有特殊意义，不能用空格替换，一定要注意
+
+
+atx -l
+
+at*apmtest=1,1,"coolcard"
+at*apmtest=2,3
+
+at*mtest=1,1,"coolcard"
+at*mtest=2,3
+
+
+<highlight><datetime>Monday, September 17, 1:00 PM</datetime></highlight>
+
+分区大小还要调整，AMSS分区应该还可能减小200M，所以这个地址在改完分区大小后还会减小
+
+
+
+<datetime>Tuesday, September 18, 9:33 AM</datetime>
+
+brcm_boot/msp/cboot/common/debug/src/cboot_debug.c
+brcm_boot/msp/cboot/common/nand/src/csl_nand.c
+hardware/common/bootloader/Broadcom/nand_nvsram.c
+hardware/common/bootloader/include/boot/config_bcm21553_acar21.h
+kernel/common/drivers/mtd/nand/nand_base.c
+
+根据CSP上Broadcom的回复
+
+以下文件已打上patch，用于在执行擦除boot分区的操作时抓取log
+
+我们需要生成一个临时版本用于压力测试，请集成组的同事帮忙编译
+
+测试时如果出现开不了机的现象，请务必不要拿掉电池重启，请直接将手机保持原状拿过来分析
+
+
+能否提供一份Scribe5手机的原理图给我们？
+我们需要移植紧急下载模式相关的代码，需要知道侧键GPIO的配置。
+
+谢谢。
+
+
+
+
+<datetime>Wednesday, September 19, 11:24 AM</datetime>
+
+我也编不下去了，只编了4个月
+
+$ adb shell
+$ bcmtest -l
+
+*MRDY: 6
+
+*MSDI: 2,0
+
+*MRDY: 5
+
+*MRDY: 2
+at*aptest$ 
+$ 
+$ bcmtest -l
+at*apmtest=1,1,"coolcard"
+
+OK
+at*apmtest=2,3
+SAGEMWIRELESS\93202@50773-1 ~
+$ adb wait-for-devices
+
+SAGEMWIRELESS\93202@50773-1 ~
+$ time adb wait-for-devices
+
+real	0m0.005s
+user	0m0.010s
+sys	0m0.000s
+
+SAGEMWIRELESS\93202@50773-1 ~
+$ adb shell
+$ bcmtest -l
+
+*MRDY: 6
+
+*MSDI: 2,0
+
+*MRDY: 5
+
+*MRDY: 2
+at*apmtest=1,1,"coolcard"
+
+OK
+at*apmtest=2,3
+SAGEMWIRELESS\93202@50773-1 ~
+$ time adb wait-for-devices
+
+real	0m29.007s
+user	0m0.010s
+sys	0m0.000s
+
+SAGEMWIRELESS\93202@50773-1 ~
+$ adb shell
+$ bcmtest -l
+
+*MRDY: 6
+
+*MSDI: 2,0
+
+*MRDY: 5
+
+*MRDY: 2
+at*apmtest=1,1,"coolcard"
+
+OK
+at*apmtest=2,3
+SAGEMWIRELESS\93202@50773-1 ~
+$ adb shell
+error: device not found
+
+
+<datetime>Thursday, September 20, 1:02 PM</datetime>
+
+
+的GPIO是哪个？
+
+
+
+<datetime>Monday, September 24, 11:31 AM</datetime>
+
+我是这么想的：
+
+1，如果送SD卡，那么就不用考虑这些方案和问题了，直接照Cocktail的做，大家都轻松
+1.1，不要看Anshu.Zhou的PPT里4G的ROM占了那么宽的一条，实际用来给用户存储的只有不到1.7G，
+        不如一张好几年前的2G大小SD卡，所以真的很小，很鸡肋
+1.2，Cocktail是送SD卡了，Samsung的ROM有16G，应该向它们学习
+
+2，然后是不送SD卡
+2.1，有没有调研/调查过MojitoICS/Cocktail用户对存储这块的需求和反馈呢？用户的软件使用习惯呢？
+2.2，如果使用ICS的方案，内部存储使用独立分区
+        建议冷切换（必须要重启），重启的意义在于，提醒用户这是一个有风险的操作，会导致重启
+        不管重启与否，总是会有部分应用不能正常运作，为什么不重启？重启是最好的警示
+2.3，如果内部存储和USERDATA共用一个分区
+        另外，这部分代码Scribe5上已经有了，高通释放的，他们的代码里压根就没想过切换的事情，能用这种方案的，ROM至少也有8个G吧
+        仍然建议冷切换，重启是最好的警示！
+
+3，我们只要做好切换后用户数据，比如媒体数据，软件设置（如果可能的话）的迁移
+
+
+我觉得USB口在左侧下方极不合理，充电时左手持机使用，难受
+
+<datetime>Monday, October 22, 9:12 AM</datetime>
+
+语法网上可以找到
+
+libatlog.so is not compiled in user build, 
+
+<datetime>Tuesday, October 23, 10:41 AM</datetime>
+
+这个是ICS，原来挂成rw的
+
+哪有？是先挂成rw再挂成ro吧
+
+
+各位，
+
+在CSP546935上BRCM给出了两个对于复现Crash问题并抓取Dump的方案，目前Poppy项目上采用第一种方案
+该方案在处理USER版本故障机的时候，需要重新刷入对应的ENG版本，再去重现相关问题
+主要缺点在于重刷软件会完全破坏手机原有状态，可能较难甚至无法重现
+
+BRCM向我们推荐方案2，方案2对比方案1的优势在于：
+不需要重刷软件，仅需要为故障机安装一个APK，只需要通过这个APK来控制Dump和CPlog的开关，尽可能地保证了手机原有状态，有利于重现问题。
+
+根据CSP578898上BRCM的回复和我们的集成和测试，目前已可在Poppy上采用方案2
+
+风险的话，BRCM推荐用方案2，从他们角度讲风险应该不会高于方案1
+我考察他们对AP这部分代码的改动，风险也不会高于方案1
+
+这两个由于只出现过一例，手机都已经修复，仅怀疑和工具有关，是否还需要再跟？
+
+
+
+
+
+</note-content></text>
+  <last-change-date>2012-10-23T17:01:42.0733560+08:00</last-change-date>
+  <last-metadata-change-date>2012-10-23T17:01:42.0733560+08:00</last-metadata-change-date>
+  <create-date>2012-07-26T13:32:59.3208570+08:00</create-date>
+  <cursor-position>17758</cursor-position>
+  <width>577</width>
+  <height>857</height>
+  <x>650</x>
+  <y>33</y>
+  <open-on-startup>False</open-on-startup>
+</note>

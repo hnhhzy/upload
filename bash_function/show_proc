@@ -9,11 +9,11 @@ Processbar()
 
 	printf "[\033[${long}C]%4s%%" 0
 
-	for ((current=0; current<long; current++)); {
+	for ((current=0; current<long; current++)); do
 		printf "\033[$((6+long-current))D>\033[1D"
 		sleep 0.1;
 		printf "=\033[$((long-current))C%4s%%" $((100*(current+1)/long))
-	}
+	done
 
 	echo
 

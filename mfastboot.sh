@@ -11,6 +11,7 @@ if [[ ! -x $FASTBOOT ]]; then
 	echo "$PRO: error: invalid $FASTBOOT."
 	exit 1
 fi
+
 # root permission
 if [[ $UID != 0 ]]; then
     FASTBOOT="sudo $FASTBOOT"
@@ -30,7 +31,7 @@ fi
 
 # name partition map
 declare -A ntop
-for img in "$IMAGE_DIR"/*.{img,mbn,ext4}; do
+for img in "$IMAGE_DIR"/*.{img,ext4}; do
     name=${img##*/}
     case $name in
     boot.img|boot.2knand.img)
@@ -47,6 +48,12 @@ for img in "$IMAGE_DIR"/*.{img,mbn,ext4}; do
         ;;
     recovery.img|recovery.2knand.img)
         ntop[$name]='recovery'
+        ;;
+    cache.img.ext4|cache.img)
+        ntop[$name]='cache'
+        ;;
+    persist.img)
+        ntop[$name]='persist'
         ;;
     *)
         continue

@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<note version="0.3" xmlns:link="http://beatniksoftware.com/tomboy/link" xmlns:size="http://beatniksoftware.com/tomboy/size" xmlns="http://beatniksoftware.com/tomboy">
+  <title>remount</title>
+  <text xml:space="preserve"><note-content version="0.1">remount
+
+mount -o rw,remount -t rootfs /
+mount -o rw,remount -t ext4 /system</note-content></text>
+  <last-change-date>2012-09-25T15:28:39.1338100+08:00</last-change-date>
+  <last-metadata-change-date>2012-10-25T10:27:25.0982750+08:00</last-metadata-change-date>
+  <create-date>2012-09-25T15:28:15.0385430+08:00</create-date>
+  <cursor-position>9</cursor-position>
+  <width>1135</width>
+  <height>546</height>
+  <x>0</x>
+  <y>0</y>
+  <tags>
+    <tag>system:notebook:tips</tag>
+  </tags>
+  <open-on-startup>False</open-on-startup>
+</note>

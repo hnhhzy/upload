@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<note version="0.3" xmlns:link="http://beatniksoftware.com/tomboy/link" xmlns:size="http://beatniksoftware.com/tomboy/size" xmlns="http://beatniksoftware.com/tomboy">
+  <title>Chinese</title>
+  <text xml:space="preserve"><note-content version="0.1">Chinese
+
+请二位帮忙生成
+
+请用这个，刚才的那个漏了一个修改，谢谢
+
+VAL测试100次左右，我们这边测试200+次，没有重现，至少概率大大减少
+
+附件
+
+由于座位调整，原网口为D1-54的非安全环境电脑移动到D1-56
+账户 93257-0
+密码 93257
+
+目前无法连网，请帮忙解决，谢谢
+
+
+我估计三星手机是这么搞的，我改了代码试试，userdata和internalSD共用空间
+
+但是可能还有不少其他问题，需要评估一下
+
+我手头上有手机，可以看现象
+
+
+补开离职证明
+
+尤伟强委托我找你补开一份离职证明，请问需要什么手续和证件？
+
+尤伟强说打电话咨询过你。
+
+谢谢。
+
+对不住，发错了
+
+
+超时是在pc端设置的吧
+
+
+
+
+
+radio
+246 32
+246 33 0/1
+
+bt
+246 39
+246 40 0/1/2/3
+
+wifi
+246 53
+246 54 0/1
+
+
+
+</note-content></text>
+  <last-change-date>2012-08-01T16:34:16.4828570+08:00</last-change-date>
+  <last-metadata-change-date>2012-08-01T16:34:16.4828570+08:00</last-metadata-change-date>
+  <create-date>2012-07-26T13:32:59.3208570+08:00</create-date>
+  <cursor-position>397</cursor-position>
+  <width>535</width>
+  <height>676</height>
+  <x>0</x>
+  <y>0</y>
+  <open-on-startup>False</open-on-startup>
+</note>

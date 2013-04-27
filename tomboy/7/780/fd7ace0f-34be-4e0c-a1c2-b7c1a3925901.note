@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<note version="0.3" xmlns:link="http://beatniksoftware.com/tomboy/link" xmlns:size="http://beatniksoftware.com/tomboy/size" xmlns="http://beatniksoftware.com/tomboy">
+  <title>01/07/13</title>
+  <text xml:space="preserve"><note-content version="0.1">01/07/13
+
+<size:large>Task</size:large>
+
+
+<size:large>Achievement</size:large>
+
+
+<size:large>Message</size:large>
+
+8x30紧急下载
+Longfei.Feng看看我这么改动，对dump到SD卡的逻辑有没有影响
+
+ip172.16.44.1 mac00-25-11-68-82-0c 的电脑因工作需要，请开通读写以下目录的权限
+\\filecenter\VAL\7_Project\28_Spyder AT&amp;T\13- SW\FOTA SW</note-content></text>
+  <last-change-date>2013-01-07T16:01:17.1127200+08:00</last-change-date>
+  <last-metadata-change-date>2013-01-07T16:01:17.1127200+08:00</last-metadata-change-date>
+  <create-date>2013-01-07T09:20:46.3965500+08:00</create-date>
+  <cursor-position>201</cursor-position>
+  <width>480</width>
+  <height>492</height>
+  <x>10</x>
+  <y>409</y>
+  <open-on-startup>False</open-on-startup>
+</note>

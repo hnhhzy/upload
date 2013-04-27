@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<note version="0.3" xmlns:link="http://beatniksoftware.com/tomboy/link" xmlns:size="http://beatniksoftware.com/tomboy/size" xmlns="http://beatniksoftware.com/tomboy">
+  <title>02/05/13</title>
+  <text xml:space="preserve"><note-content version="0.1">02/05/13
+
+<size:large>Task</size:large>
+
+
+<size:large>Achievement</size:large>
+
+
+<size:large>Message</size:large>
+filecenter下的目录我又没法访问了
+可以从我座位旁的共用电脑上
+d:\USER\Zhh\RBFOTA\OUTPUT
+目录下找到两个差分包
+
+我测试了一下，可能版本之间软件改动太大，更新后手机可能卡在动画界面无法启动，恢复出厂设置后可以启动
+如果也是这个现象的话，还需要Min.Duan帮忙做一个daily之间的差分包用来测试
+
+@Min.Duan，做包过程仍是按照文档上的来，有疑问请联系我，我手机随时开机</note-content></text>
+  <last-change-date>2013-02-05T20:03:28.8978650+08:00</last-change-date>
+  <last-metadata-change-date>2013-02-05T20:03:28.8978650+08:00</last-metadata-change-date>
+  <create-date>2013-02-05T08:59:14.2753320+08:00</create-date>
+  <cursor-position>246</cursor-position>
+  <width>760</width>
+  <height>522</height>
+  <x>0</x>
+  <y>0</y>
+  <open-on-startup>False</open-on-startup>
+</note>

@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<note version="0.3" xmlns:link="http://beatniksoftware.com/tomboy/link" xmlns:size="http://beatniksoftware.com/tomboy/size" xmlns="http://beatniksoftware.com/tomboy">
+  <title>Tips</title>
+  <text xml:space="preserve"><note-content version="0.1">Tips
+
+cat <link:url>/dev/graphics/fb0</link:url> &gt; <link:url>/data/frame.raw</link:url>
+
+dd bs=1920 count=800 if=frame.raw of=xxx.raw
+
+ffmpeg -vcodec rawvideo -f rawvideo -pix_fmt bgr32 -s 480X800 -i xxx.raw -f image2 -vcodec png xxx.png</note-content></text>
+  <last-change-date>2012-05-26T11:28:41.3503740+08:00</last-change-date>
+  <last-metadata-change-date>2012-05-26T11:28:41.3503740+08:00</last-metadata-change-date>
+  <create-date>2012-03-12T15:58:07.6657330+08:00</create-date>
+  <cursor-position>195</cursor-position>
+  <width>977</width>
+  <height>576</height>
+  <x>228</x>
+  <y>528</y>
+  <open-on-startup>False</open-on-startup>
+</note>

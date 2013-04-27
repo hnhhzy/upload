@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<note version="0.3" xmlns:link="http://beatniksoftware.com/tomboy/link" xmlns:size="http://beatniksoftware.com/tomboy/size" xmlns="http://beatniksoftware.com/tomboy">
+  <title>Autoreboot</title>
+  <text xml:space="preserve"><note-content version="0.1">Autoreboot
+
+count=0
+while adb wait-for-device; do
+	sleep 5
+	if adb shell ps | grep rild &amp;&amp; adb shell ps | grep qmuxd; then
+		((count++))
+		echo $count
+		adb shell reboot
+	else
+		alert '别瞎忙了，找不到卡了！！！'
+		adb pull <link:url>/data/dmesg_E.log</link:url> &amp;&amp; adb pull <link:url>/data/logcat_E.log</link:url>
+		break
+	fi
+done</note-content></text>
+  <last-change-date>2011-12-22T12:51:06.4615340+08:00</last-change-date>
+  <last-metadata-change-date>2011-12-22T12:51:06.4615340+08:00</last-metadata-change-date>
+  <create-date>2011-12-22T12:33:56.4679600+08:00</create-date>
+  <cursor-position>0</cursor-position>
+  <width>450</width>
+  <height>360</height>
+  <x>0</x>
+  <y>0</y>
+  <open-on-startup>False</open-on-startup>
+</note>

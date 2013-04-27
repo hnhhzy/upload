@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<note version="0.3" xmlns:link="http://beatniksoftware.com/tomboy/link" xmlns:size="http://beatniksoftware.com/tomboy/size" xmlns="http://beatniksoftware.com/tomboy">
+  <title>02/28/13</title>
+  <text xml:space="preserve"><note-content version="0.1">02/28/13
+
+<size:large>Task</size:large>
+
+
+<size:large>Achievement</size:large>
+
+
+<size:large>Message</size:large>
+这几个bug附件里的log应该是由Zhuijun.Bao他们做的工具抓的
+但是发生重启的一些关键log都没了，你可以看到我附言里指出来的部分
+
+这样的情况要怎么搞？
+
+
+hu.yang
+
+关键是手机里抓log的工具不给力，关键的时候android重启了，log也没了
+我估计就是你亲自去抓，用的是手机里的工具的话，log还是不全
+
+宁波应该可以重现
+主要是bug附件里的log看不到关机过程，并且没有kernel的log
+
+你如果有空，可以现看看附件里的log，看看有没有用
+
+In &lt;CDR-DVM-1014&gt;, Software Update Test Packages we can provide are listed here (refers to Bug#392978)
+
+• Package to fix a radio stack issue -- YES
+• Package with multiple fixes and enhancements to the radio stack and native OS -- YES
+• Software downgrade package -- YES (Since Android is a complex system, it can not ensure system will boot normal again after downgrade package installed, user need do factory reset)
+• Large package in size at least 90% of supported and available/free memory -- YES
+• Package including updates or fixes to core applications -- YES
+• Corrupt package which contains one or more of these characteristics - partially corrupted files, corrupted files with added data, corrupted header file with correct delta data, and not a firmware delta data case such as TXT, IMG, MOV -- YES
+• User initiated update package -- NO
+• Multiple update packages as needed to update all production devices to the final software for an EMR or MR. For example, the EMR package version is ER. There are devices in production with either ACR or CR software on them. Hence, the OEM shall provide update packages which will update the ACR devices to ER software version, and the CR devices to the ER software version -- YES
+• Device Update initiation XML file (for devices supporting dual client architecture) -- NO
+• Large update package (for devices supporting <link:broken>WiFi</link:broken> download of large update packages)Software update packages needed to update AT&amp;T tester devices -- YES
+
+目前还没有在代码找到主动发送AT命令重启的内容，所以也不排除电脑上其他软件导致的问题
+
+
+
+
+</note-content></text>
+  <last-change-date>2013-02-28T18:06:25.1972140+08:00</last-change-date>
+  <last-metadata-change-date>2013-02-28T18:06:25.1972140+08:00</last-metadata-change-date>
+  <create-date>2013-02-28T09:16:28.3136680+08:00</create-date>
+  <cursor-position>1797</cursor-position>
+  <width>1265</width>
+  <height>725</height>
+  <x>13</x>
+  <y>110</y>
+  <open-on-startup>False</open-on-startup>
+</note>

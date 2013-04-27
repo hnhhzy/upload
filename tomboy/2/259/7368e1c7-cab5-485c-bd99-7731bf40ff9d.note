@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<note version="0.3" xmlns:link="http://beatniksoftware.com/tomboy/link" xmlns:size="http://beatniksoftware.com/tomboy/size" xmlns="http://beatniksoftware.com/tomboy">
+  <title>Dump</title>
+  <text xml:space="preserve"><note-content version="0.1">Dump
+
+<monospace>cd Z:\mojito_v118_0\amss\modem_proc\build\ms
+do load_log
+
+d.save.binary s:\tmp\dmesg.txt 0x8f42ac++0x20000
+
+mv ..\..\tools\qshrink\<link:broken>QSRMessageHash</link:broken></monospace><monospace>.qsr ..\..\tools\qshrink\hash.txt
+do recover_f3 s:\tmp
+
+do ..\..\tools\debug\smemlog
+$ ../../tools/debug/smem_log.pl &gt; smemlog.txt</monospace>
+
+
+send_data 75 37 03 00</note-content></text>
+  <last-change-date>2012-08-01T09:58:17.2160780+08:00</last-change-date>
+  <last-metadata-change-date>2012-08-01T09:58:17.2160780+08:00</last-metadata-change-date>
+  <create-date>2012-01-09T14:58:37.5392420+08:00</create-date>
+  <cursor-position>284</cursor-position>
+  <width>450</width>
+  <height>360</height>
+  <x>594</x>
+  <y>188</y>
+  <open-on-startup>False</open-on-startup>
+</note>

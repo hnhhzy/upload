@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<note version="0.3" xmlns:link="http://beatniksoftware.com/tomboy/link" xmlns:size="http://beatniksoftware.com/tomboy/size" xmlns="http://beatniksoftware.com/tomboy">
+  <title>Tips</title>
+  <text xml:space="preserve"><note-content version="0.1">Tips
+
+<bold>#vi hex</bold><monospace>
+:%!xxd -g 1
+
+</monospace><bold>#mount a file as a loop device</bold><monospace>
+dd if=/dev/zero of=nosd.bin bs=1K count=10240
+mkfs.vfat nosd.bin
+adb push nosd.bin /data
+
+init.rc:
+mkdir <link:url>/system/nosd</link:url></monospace><monospace>
+mount vfat <link:url>/dev/block/loop3</link:url></monospace><monospace> <link:url>/system/nosd</link:url></monospace><monospace>
+chown system system <link:url>/system/nosd</link:url></monospace><monospace>
+chmod 0777 <link:url>/system/nosd</link:url></monospace><monospace>
+losetup <link:url>/dev/block/loop3</link:url></monospace><monospace> <link:url>/data/nosd.bin</link:url></monospace><monospace>
+write <link:url>/sys/devices/platform/usb_mass_storage/lun1/file</link:url></monospace><monospace> <link:url>/dev/block/loop3</link:url></monospace>
+
+<bold>#oemsbl_uart3</bold>
+<monospace>extern int sprintf(char *destination, const char * format, ...);
+byte oemsbl_uart3_str[256] = {0};
+sprintf(oemsbl_uart3_str, "magic_ck fail: 0x%x, 0x%x\r\n", magic_ck.magic1_number, magic_ck.magic2_number);
+oemsbl_uart3_transmit_string(oemsbl_uart3_str);</monospace>
+</note-content></text>
+  <last-change-date>2012-03-15T17:22:56.8904160+08:00</last-change-date>
+  <last-metadata-change-date>2012-03-15T17:22:56.8904160+08:00</last-metadata-change-date>
+  <create-date>2012-03-12T15:58:07.6657330+08:00</create-date>
+  <cursor-position>656</cursor-position>
+  <width>709</width>
+  <height>511</height>
+  <x>0</x>
+  <y>0</y>
+  <open-on-startup>False</open-on-startup>
+</note>

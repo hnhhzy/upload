@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<note version="0.3" xmlns:link="http://beatniksoftware.com/tomboy/link" xmlns:size="http://beatniksoftware.com/tomboy/size" xmlns="http://beatniksoftware.com/tomboy">
+  <title>01/14/13</title>
+  <text xml:space="preserve"><note-content version="0.1">01/14/13
+
+<size:large>Task</size:large>
+
+
+<size:large>Achievement</size:large>
+
+
+<size:large>Message</size:large>
+
+
+File RECOVERY_DIR = new File("/cache/recovery");
+RECOVERY_DIR.mkdirs();
+File ddddd_DIR = new File(RECOVERY_DIR , "dddddd");
+ddddd_DIR.mkdirs();
+
+
+6030X
+
+</note-content></text>
+  <last-change-date>2013-01-14T14:04:32.9048590+08:00</last-change-date>
+  <last-metadata-change-date>2013-01-14T14:04:32.9048590+08:00</last-metadata-change-date>
+  <create-date>2013-01-14T09:17:39.1523190+08:00</create-date>
+  <cursor-position>184</cursor-position>
+  <width>450</width>
+  <height>360</height>
+  <x>17</x>
+  <y>38</y>
+  <open-on-startup>False</open-on-startup>
+</note>

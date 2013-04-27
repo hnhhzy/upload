@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<note version="0.3" xmlns:link="http://beatniksoftware.com/tomboy/link" xmlns:size="http://beatniksoftware.com/tomboy/size" xmlns="http://beatniksoftware.com/tomboy">
+  <title>Chinese</title>
+  <text xml:space="preserve"><note-content version="0.1">Chinese
+
+请二位帮忙生成
+
+请用这个，刚才的那个漏了一个修改，谢谢
+
+VAL测试100次左右，我们这边测试200+次，没有重现，至少概率大大减少
+
+附件
+
+由于座位调整，原网口为D1-54的非安全环境电脑移动到D1-56
+账户 93257-0
+密码 93257
+
+目前无法连网，请帮忙解决，谢谢
+
+
+我估计三星手机是这么搞的，我改了代码试试，userdata和internalSD共用空间
+
+但是可能还有不少其他问题，需要评估一下
+
+我手头上有手机，可以看现象
+
+
+补开离职证明
+
+尤伟强委托我找你补开一份离职证明，请问需要什么手续和证件？
+
+尤伟强说打电话咨询过你。
+
+谢谢。
+
+对不住，发错了
+
+
+超时是在pc端设置的吧
+
+
+
+
+
+radio
+246 32
+246 33 0/1
+
+bt
+246 39
+246 40 0/1/2/3
+
+wifi
+246 53
+246 54 0/1
+
+
+主要有3个新变化
+
+平台8x30启动流程变化
+Flash由nand换成emmc
+Android系统由2.3升级到4.0
+
+这些都可能block住，保守估计3个月吧
+
+
+
+复用仓库，用现有的仓库，同步到指定的分支，节省硬盘空间节约下载时间
+预先有一个仓库，比如
+SAGEMWIRELESS\93202@50773-1 <link:url>/media/Ubuntu/src/platform_qcom/.repo</link:url>
+$ l
+manifests/  manifests.git/  projects/  repo/
+
+正常我们拉新工程代码的流程，比如
+$ mkdir aeneas_duralife_vK35_0
+$ cd aeneas_duralife_vK35_0
+$ repo init -u <link:url>git@172.16.11.162:platform_qcom/manifests.git</link:url> -m ver/aeneas/aeneas_duralife_vK35_0.xml
+$ repo sync
+$ repo start aeneas_duralife_vK35_0 --all
+这样会重新完整下载一个仓库
+
+用脚本一步到位
+$ repo_new_from_present_repository -u <link:url>git@172.16.11.162:platform_qcom/manifests.git</link:url> -m ver/aeneas/aeneas_duralife_vK35_0.xml
+关键在aeneas_duralife_vK35_0目录下自建.repo文件夹，然后把四个目录
+manifests/  manifests.git/  projects/  repo/
+链接到该文件夹下
+
+本质上是因为git仓库是可以共用，我发现工程里的.git也是自建文件夹，比如
+$ cd build/.git
+$ l
+config@  description@  HEAD  hooks@  index  info@  logs@  objects@  packed-refs@  refs@  rr-cache@  svn@
+其他文件（夹）都是链接，只有HEAD，index两个是普通文件，这两个应该类似.repo目录下的manifest.xml和project.list
+所以不同的工程有自己独立的代码，不会因为其他工程切换分支导致混乱
+
+当然复用仓库会导致本地分支过多，看起来有点乱，但是方便追溯自己的改动和提交
+$ repo branch
+   medoc_lite                | not in:
+                                   poppy_wimdata_ng/wcustores
+                                   poppy_wimdata_ng/wlanguage
+                                   poppy_wimdata_ng/wprocedures
+                                   poppy_wimdata_ng/wtheme
+                                   poppy_wimdata_ng/wtime
+*  poppy                     | in all projects
+
+
+另外，一般我们会每周随周软件的发布更新一次本地的工程，全新编译
+现在可以这样，比如
+aeneas_duralife_vK35_0要更新到aeneas_duralife_vK36_0
+$ cd aeneas_duralife_vK35_0/
+$ rm -rf *
+$ repo_init_sync_from_present_repository -u <link:url>git@172.16.11.162:platform_qcom/manifests.git</link:url> -m ver/aeneas/aeneas_duralife_vK36_0.xml
+
+
+</note-content></text>
+  <last-change-date>2012-08-06T11:36:25.3485490+08:00</last-change-date>
+  <last-metadata-change-date>2012-08-06T11:36:25.3485490+08:00</last-metadata-change-date>
+  <create-date>2012-07-26T13:32:59.3208570+08:00</create-date>
+  <cursor-position>833</cursor-position>
+  <width>583</width>
+  <height>639</height>
+  <x>513</x>
+  <y>141</y>
+  <open-on-startup>False</open-on-startup>
+</note>

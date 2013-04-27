@@ -1,0 +1,650 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<note version="0.3" xmlns:link="http://beatniksoftware.com/tomboy/link" xmlns:size="http://beatniksoftware.com/tomboy/size" xmlns="http://beatniksoftware.com/tomboy">
+  <title>Chinese</title>
+  <text xml:space="preserve"><note-content version="0.1">Chinese
+
+不好意思，写错了，是按照recovey_mmc.fstab里的
+
+find_mounted_volume_by_mount_point() 
+只是去确认指定的目录是否挂载了，不去关心挂载的是哪个设备啊
+
+如果该目录已经在/proc/mounts列表里，就表示挂载了
+否则就去按照vold.emmc.fstab里的挂载
+
+
+
+
+
+<highlight><datetime>Tuesday, August 14, 11:17 AM</datetime></highlight>
+
+压缩包内是加上的Broadcom的补丁，目的是在校准模式下禁止长按开机键8s关机
+
+
+<highlight><datetime>Monday, August 13, 1:09 PM</datetime></highlight>
+
+Medoc_lite在Win7下rndis免驱动修改方案
+
+重新编译boot.img
+
+然后找台电脑试试看
+
+kernel/common/drivers/usb/gadget_brcm/f_rndis.c
+
+/* interface descriptor: */
+
+static struct usb_interface_descriptor rndis_control_intf = {
+	.bLength =		sizeof rndis_control_intf,
+	.bDescriptorType =	USB_DT_INTERFACE,
+
+	/* .bInterfaceNumber = DYNAMIC */
+	/* status endpoint is optional; this could be patched later */
+	.bNumEndpoints =	1,
+	.bInterfaceClass =	USB_CLASS_COMM,
+	.bInterfaceSubClass =   USB_CDC_SUBCLASS_ACM,
+	.bInterfaceProtocol =   USB_CDC_ACM_PROTO_VENDOR,
+	/* .iInterface = DYNAMIC */
+};
+
+中
+	.bInterfaceClass =	USB_CLASS_COMM,
+	.bInterfaceSubClass =   USB_CDC_SUBCLASS_ACM,
+	.bInterfaceProtocol =   USB_CDC_ACM_PROTO_VENDOR,
+三项改成
+	.bInterfaceClass =	0xe0,
+	.bInterfaceSubClass =  0x01,
+	.bInterfaceProtocol =   0x03,
+
+
+
+开机输入C，进校准模式后在长按开机键
+
+我们是这么重现的，手机上电池，连接USB转串口线，用minicom发送串口命令C，手机进入校准模式，然后再长按开机键，手机震动并正常启动
+另外，在vT15的软件上测试，也可以重现的，但是poppy上进入校准模式后，长按开机键则仍停留在校准模式
+
+@Weifeng.Li
+@Yan.Li
+brcm_boot里的代码是怎么编译的？
+
+<datetime>Thursday, August 9, 10:27 AM</datetime>
+
+代码由Guobing.Miao批了
+发送失败
+我本地测试可以正常开机打电话发短信，并请贾工（Qiangli.Jia）测过功耗
+
+现代码已提交，Jingbin.Yan审批
+
+Bug我自己建的
+
+
+我就吐个槽，桥边IBM的广告牌纸糊般得倒了，微软大楼旁边三期工程的墙倒了，公司楼前垃圾桶的盖子不知道吹哪里去了
+这一刻我感到董存瑞，黄继光，邱少云，雷锋同志灵魂附体，我不是一个人在战斗
+
+呵呵
+
+@Xingming.Li
+下午我去找你帮忙演示/重现
+
+我们自己如何重现？
+
+932478
+wl1_sleep
+play weibo
+
+<highlight><datetime>Wednesday, August 8, 10:22 AM</datetime></highlight>
+
+可以用这个工具查看USB是高速还是满速，图片为实例
+
+<highlight><datetime>Tuesday, August 7, 11:20 AM</datetime></highlight>
+
+
+==============================================
+
+请二位帮忙生成
+
+请用这个，刚才的那个漏了一个修改，谢谢
+
+VAL测试100次左右，我们这边测试200+次，没有重现，至少概率大大减少
+
+附件
+
+由于座位调整，原网口为D1-54的非安全环境电脑移动到D1-56
+账户 93257-0
+密码 93257
+
+目前无法连网，请帮忙解决，谢谢
+
+
+我估计三星手机是这么搞的，我改了代码试试，userdata和internalSD共用空间
+
+但是可能还有不少其他问题，需要评估一下
+
+我手头上有手机，可以看现象
+
+
+补开离职证明
+
+尤伟强委托我找你补开一份离职证明，请问需要什么手续和证件？
+
+尤伟强说打电话咨询过你。
+
+谢谢。
+
+对不住，发错了
+
+
+超时是在pc端设置的吧
+
+
+
+
+
+radio
+246 32
+246 33 0/1
+
+bt
+246 39
+246 40 0/1/2/3
+
+wifi
+246 53
+246 54 0/1
+
+
+主要有3个新变化
+
+平台8x30启动流程变化
+Flash由nand换成emmc
+Android系统由2.3升级到4.0
+
+这些都可能block住，保守估计3个月吧
+
+
+
+复用仓库，用现有的仓库，同步到指定的分支，节省硬盘空间节约下载时间
+预先有一个仓库，比如
+SAGEMWIRELESS\93202@50773-1 <link:url>/media/Ubuntu/src/platform_qcom/.repo</link:url>
+$ l
+manifests/  manifests.git/  projects/  repo/
+
+正常我们拉新工程代码的流程，比如
+$ mkdir aeneas_duralife_vK35_0
+$ cd aeneas_duralife_vK35_0
+$ repo init -u <link:url>git@172.16.11.162:platform_qcom/manifests.git</link:url> -m ver/aeneas/aeneas_duralife_vK35_0.xml
+$ repo sync
+$ repo start aeneas_duralife_vK35_0 --all
+这样会重新完整下载一个仓库
+
+用脚本一步到位
+$ repo_new_from_present_repository -u <link:url>git@172.16.11.162:platform_qcom/manifests.git</link:url> -m ver/aeneas/aeneas_duralife_vK35_0.xml
+关键在aeneas_duralife_vK35_0目录下自建.repo文件夹，然后把四个目录
+manifests/  manifests.git/  projects/  repo/
+链接到该文件夹下
+
+本质上是因为git仓库是可以共用，我发现工程里的.git也是自建文件夹，比如
+$ cd build/.git
+$ l
+config@  description@  HEAD  hooks@  index  info@  logs@  objects@  packed-refs@  refs@  rr-cache@  svn@
+其他文件（夹）都是链接，只有HEAD，index两个是普通文件，这两个应该类似.repo目录下的manifest.xml和project.list
+所以不同的工程有自己独立的代码，不会因为其他工程切换分支导致混乱
+
+当然复用仓库会导致本地分支过多，看起来有点乱，但是方便追溯自己的改动和提交
+$ repo branch
+   medoc_lite                | not in:
+                                   poppy_wimdata_ng/wcustores
+                                   poppy_wimdata_ng/wlanguage
+                                   poppy_wimdata_ng/wprocedures
+                                   poppy_wimdata_ng/wtheme
+                                   poppy_wimdata_ng/wtime
+*  poppy                     | in all projects
+
+
+另外，一般我们会每周随周软件的发布更新一次本地的工程，全新编译
+现在可以这样，比如
+aeneas_duralife_vK35_0要更新到aeneas_duralife_vK36_0
+$ cd aeneas_duralife_vK35_0/
+$ rm -rf *
+$ repo_init_sync_from_present_repository -u <link:url>git@172.16.11.162:platform_qcom/manifests.git</link:url> -m ver/aeneas/aeneas_duralife_vK36_0.xml
+
+
+<highlight><datetime>Tuesday, August 14, 11:32 AM</datetime></highlight>
+
+<highlight><datetime>Wednesday, August 15, 9:47 AM</datetime></highlight>
+
+请帮忙签个名，谢谢
+
+313959
+MINI / can't access to normal test mode when long press power on key
+.
+Please chose the bug root cause:
+    1-Unknown_Today
+    2-Architecture
+    3-Specification
+    4-Design
+    5-Coding
+    6-Regression
+    7-Evolution
+Your choise:4
+Module_Impact:boot2
+.
+Test_Suggestion:Long press power key in Calibration mode.
+.
+Solution:Disable long press shutdown in Calibration mode.
+.
+Test_Report:Ok.
+
+把你的改的代码发我瞧瞧？
+system/vold/目录下的就行
+
+<highlight><datetime>Thursday, August 16, 1:08 PM</datetime></highlight>
+
+<link:url>http://tieba.baidu.com/p/1786127269</link:url>
+
+我给的改动，仅验证可以使用，是否有其他问题，比如Mingmao.Luo说的会不会有商业纠纷之类的，我不清楚
+
+另外，MojitoICS上的相关的代码是作过类似修改的
+
+Jinbo.Zhang可以去催Broadcom给一个明确的回复
+要怎么搞？
+如果不知道，那么用我的改法有没有所谓的其他问题？
+让他们给出方案
+
+<highlight><datetime>Friday, August 17, 1:49 PM</datetime></highlight>
+
+版本关于测试用差分包升级失败的BUG
+
+我已经更新了RedBand服务器上做测试包的脚本
+
+请Yanghuang.Ding重新生成6个基于vFUS的测试用包
+请Hui.Xie稍候再测试
+
+谢谢
+
+
+为方便USER版本FOTA测试，请求集成ENG上的测试应用程序
+
+<link:url>http://bugzilla.tcl-ta.com/show_bug.cgi?id=309969</link:url>
+
+为了方便今后USER版本的软件测试差分包，希望能把ENG版本上的一个应用也集成到USER版本上，可以做成一个隐藏的应用，在拨号界面通过拨特殊字串调出
+
+这样可以在本地先验证zip格式的差分包，确保正确再上传并联网测试
+
+该应用在这个路径下
+
+需要在下一个版本的mini软件上验证
+
+<highlight><datetime>Monday, August 20, 1:25 PM</datetime></highlight>
+
+我觉得这个会，Guobing.Miao也应该参与进来
+
+ 
+用于在recovery下验证的改动
+
+这个是基于Aeneas改的，我想Venus的代码应该差不错
+
+<highlight><datetime>Tuesday, August 21, 9:43 AM</datetime></highlight>
+
+在ENG版本的软件上测试差分包，可以使用应用AlphaFOTA
+本地验证的时候可以直接选择zip文件进行升级
+
+但是在USER版本的软件上没有集成AlphaFOTA这个应用
+为了方便差分包（zip格式）生成后本地测试，修改了recovery.c的代码
+测试人员可以按照如下操作验证
+1，将生成的zip格式差分包放入SD卡根目录，路径应该是/sdcard/xxx.zip
+2，手机刷入指定版本的软件
+3，插入SD卡并启动进入recovery模式
+Venus-usc是按住HOME键开机
+Aeneas_duralife是按住音量上键开机
+4，进入选项
+apply update from sdcard
+就可以选择SD卡中的zip文件，升级过程中屏幕会显示很多E带头的LOG
+升级后手机会有1-2次重启
+整个过程完成后可以查看版本号
+5，所有需要测试的zip包都按照以上过程执行
+
+
+这个修改我提交到了FOTA移植的BUG上去了
+
+验证（测试）
+
+目前生成的差分包一般有两种格式：zip（未签名），xml（签名）
+后者上传到服务器，用于在线升级
+前者可以用来在本地验证差分包的正确性
+因此最好能在上传服务器前首先在本地验证差分包
+
+在ENG版本的软件上验证差分包，可以使用应用AlphaFOTA
+进入选项
+Update from SD card
+选择SD卡中的zip文件进行升级
+
+但是在USER版本的软件上没有集成AlphaFOTA这个应用
+为了方便差分包（zip格式）生成后本地测试，修改了recovery的流程（aeneas的代码已提交）
+
+测试人员可以按照如下操作验证
+1，将生成的zip格式差分包放入SD卡根目录，路径应该是/sdcard/xxx.zip
+2，手机刷入指定版本的软件
+3，插入SD卡并启动进入recovery模式
+Venus-usc是按住HOME键开机
+Aeneas_duralife是按住音量上键开机
+4，进入选项
+apply update from sdcard
+就可以选择SD卡中的zip文件，升级过程中屏幕会显示很多E带头的LOG
+升级后手机会有1-2次重启
+整个过程完成后可以查看版本号
+5，所有需要测试的zip包都按照以上过程执行
+
+每次生成差分包后，先本地验证zip包，验证通过后再交由VAL的同事进行在线测试
+或者由VAL的同事按照以上方法验证zip，再进行在线测试
+
+
+这个问题还是上回说的，出现的时候能不能看看（可能还有其他原因）
+是高速还是满速
+是否USB线松动
+是否更新驱动后重现
+是否换台电脑重现
+高通电话中给的回复说这一现象原因很多，需要排查
+
+没有特意去重现，出现这个状况一般是手机adb打开关闭的时候，正常情况下没有留意
+
+第二条
+2.对于custpack 和 udisk 功能上的合用，如果在分区定义上（rawpagram.xml）上还是分开的，这对HDT工具应该不会有影响
+
+合用的方法是userdata和udisk共用一个分区的空间，这个分区是最后一个分区
+在rawpagram.xml上定义
+
+首先创建一个udisk.bin
+
+挂载这个镜像到一个目录
+
+往这个目录里添加一些文件，注意权限
+
+卸载该目录
+
+将这个udisk.bin刷到手机里
+
+fastboot flash mdm udisk.bin
+
+udisk.bin预置文件
+
+case 00861045 指导如何创建udisk.bin
+case 00955001 指导如何预置文件，等回复
+
+
+<highlight><datetime>Wednesday, August 22, 1:14 PM</datetime></highlight>
+
+最新的mini软件vT19已经集成了Broadcom的补丁，我手动测试了一下，没有重现
+
+Cheng.Chen有测试结果吗？
+
+
+MojitoICS上两个分区，恢复出厂设置时会将两个分区都擦除
+FAT
+
+
+<highlight><datetime>Thursday, August 23, 1:14 PM</datetime></highlight>
+
+我修改的文件是kernel/common/kernel/power/earlysuspend.c
+只需要生成boot.img
+
+请告知Yuling.Huang指出的版本如何下载，编译，签名
+
+谢谢
+
+请帮忙编译，谢谢
+
+
+
+
+Liu Jie, Zhang He, Zhang hanling, Shi haojun, Chen Zhiming, Zheng Hongfang
+
+各位，关于这个PPT，请鼎立支持，畅所欲言
+
+以下三条请在自己熟悉/专长的模块/领域提供相应的意见，我汇总一下，谢谢！
+
+1，在8x27/8x30上我们的开发或优化（针对该点）；
+2，目前可见的需要高通技术支持的点（需要阅读高通文档或代码）；
+3，其它需要Highlight给高通的点；
+
+
+
+1，修改分区表
+amss_8x25/modem_proc/vendor/tct/scribe5/build/partition_load_pt/partition.xml
+
+&lt;extended order="8" type="83" label="CUSTPACK" size="819200" readonly="false"&gt;
+    &lt;file name="custpack.img.ext4" offset="0" appsbin="true"/&gt;
+&lt;/extended&gt;
+
+
+2，修改bootloader识别分区，主要用于fastboot刷机
+bootable/bootloader/lk/platform/msm_shared/partition_parser.c
+
+char *ext3_partitions[] =
+    { "system", "custpack", "persist", "cache", "userdata", "tombstones" };
+
+
+3，修改分区的挂载
+system/core/rootdir/init.rc
+device/tct/scribe5/fstab.msm7627a
+device/tct/scribe5/init.target.rc
+device/tct/scribe5/recovery.fstab
+
+
+添加custpack分区及分区调整
+
+
+
+<highlight><datetime>Monday, August 27, 9:31 AM</datetime></highlight>
+
+
+触屏死，底下四按键振动，电源键可关屏，但不能激活，侧键拍照无响应
+
+
+
+project aeneas_duralife
+PR 309969
+correct scripts for generating diff packages
+
+project poppy
+PR 316764
+created Broadcom case and to catch more logs
+
+project scribe5
+FR 318606
+memory partition setup 
+
+
+三个压缩分别是：
+8.25整天有效的log
+8.27现象重现的log
+重现后用在电脑上抓的log
+
+Yuling.Huang回忆，此bug发生在8.25下午4点37或52左右，重点可以看8.25的
+
+今天早上我看到的现象是：
+phone，launcher，settings先后force close
+接着触屏无反应，底下四个触摸键触摸有振动，电源键可关屏，但不能激活，侧键拍照键无响应
+只能重启
+
+
+小组成员变动：
+Zhiming.Chen 换成 Hongxing.Li
+Hongfang.Zheng 换成 Zhipiao.Pan
+
+帮我修改了一下，Hanling.Zhang 提供了宝贵意见
+
+参考了 Jiaxi.Wang 的PPT
+
+写得很少，请指正
+
+
+试试这个，我在Ubuntu和Windows（WPS）下都能打开
+
+
+
+这些是WIFI的LOG吗？重复出现，这是在干什么？
+
+
+再早一些时候的LOG，只有kernel的，没有Android的log
+
+
+
+企业文化
+
+
+
+
+
+
+
+
+
+<highlight><datetime>Thursday, August 30, 11:30 AM</datetime></highlight>
+
+1，internal sdcard无法使用USB mass storage功能
+   但external sdcard可以使用USB mass storage功能（如果需要）
+2，factory reset会格式化/data目录，internal sdcard使用的是/data下的一个子目录
+   所以也会通通格式化掉
+   如果要保留internal sdcard内容，可以有两种方法
+   一种是备份到SD卡
+   另一种是按照包工说的，不格式化/data，只是删除文件，这个不知道效率如何
+   
+实际
+
+
+
+恢复出厂设置，就是这个意思，
+
+
+准确的讲，internal sdcard 应该叫 embedded storage
+这部分不可卸载，恢复出厂设置也应该格式化掉
+
+本地备份的实现，应该参照Android原有的设计
+
+
+<highlight><datetime>Friday, August 31, 9:40 AM</datetime></highlight>
+
+保存到SD卡上，不要漏了引号
+LOG就保存在SD卡里的dmesg.txt文件中
+
+
+如果SD放满了，删除kmsg.txt，再重新执行
+
+
+<highlight><datetime>Monday, September 3, 9:54 AM</datetime></highlight>
+
+刚才从SD拷出来的LOG
+
+内网常用的链接
+
+代码仓库
+<link:url>http://172.16.11.162/</link:url>
+
+提交代码审批
+<link:url>http://172.16.11.162:8081</link:url>
+
+bug库
+<link:url>http://bugzilla.tcl-ta.com/</link:url>
+
+
+这个截图和跟我们描述的情况不一样啊
+
+从截图上看，
+
+我看了下现象
+
+没有Storage volumes是因为Storage volumes和diag被当作一个设备
+这次是被当成一个diag，按图所示手动更新该设备，就可以自动分裂成两个设备
+分别装上驱动
+这个原因应该是以前安装的驱动有冲突
+有一个INF文件里有VID_05C6&amp;PID_9006，估计是mojito用的驱动
+
+问问上海的同事能否想办法结局
+
+但是Bingliang.Ou图上原本应该显示为USB Composite Device的却显示成ALCATAL字样，我就不明白了
+
+
+1，MojitoICS在下载模式下，diag和storage会被识别成一个设备（可能由于已安装过Mojito的驱动）
+2，原本应该显示为USB Composite Device的却显示成ALCATAL字样
+
+这两个问题怎么解？
+
+
+这个补丁是哪个？可以发我们一下吗？
+卸载原来的驱动，用的是uninstall程序吗？如果不是用install安装的，有没有方法可以卸载干净？
+
+
+
+81466.313812
+50604.083404
+
+
+Broadcom给了一个patch，我已经加到此文件中，请
+
+
+
+scribe5 AMSS 分区大小问题
+QRD 释放的版本中，AMSS 分区占用400M，实际刷入该分区的镜像fat.bin只会占用200M
+约摸200M空间未使用
+而目前AMSS编译出来的文件（amss.mbn + amsshd.mbn）只有20M不到，这样在fat.bin中的200M空间又有150M多未用
+总共约350M浪费
+
+在MojitoICS上目前AMSS仅占用60M
+
+需要询问这样的划分出于什么原因？是否可以适当减小？今后如果AMSS编译出来大小增加，又需要预留多少？
+
+已建 case 316539
+分区表
+
+<highlight><datetime>Wednesday, September 5, 10:38 AM</datetime></highlight>
+
+由于新员工入职，导致共用电脑位置变更，无法连接内网，请帮忙解决
+
+网卡地址 00-1E-90-78-4A-33
+网口 D1-40
+
+账户 sagemwireless\92488
+
+lease chose the bug root cause:
+    1-Unknown_Today
+    2-Architecture
+    3-Specification
+    4-Design
+    5-Coding
+    6-Regression
+    7-Evolution
+Your choise:1
+Module_Impact:kernel, suspend &amp; resume
+.
+Test_Suggestion:Press power key to light on screen.
+.
+Solution:Patch from Broadcom CSP562704                     
+.
+Test_Report:Never reproduct. 
+
+目前还是没法联网，网络连接显示断开，类似于网线断开的状态
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</note-content></text>
+  <last-change-date>2012-09-05T14:13:40.4849610+08:00</last-change-date>
+  <last-metadata-change-date>2012-09-05T14:13:40.4849610+08:00</last-metadata-change-date>
+  <create-date>2012-07-26T13:32:59.3208570+08:00</create-date>
+  <cursor-position>10210</cursor-position>
+  <width>817</width>
+  <height>791</height>
+  <x>461</x>
+  <y>52</y>
+  <open-on-startup>False</open-on-startup>
+</note>

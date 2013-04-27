@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<note version="0.3" xmlns:link="http://beatniksoftware.com/tomboy/link" xmlns:size="http://beatniksoftware.com/tomboy/size" xmlns="http://beatniksoftware.com/tomboy">
+  <title>Local codes management</title>
+  <text xml:space="preserve"><note-content version="0.1">Local codes management
+
+以scribe5项目为例
+
+一般在本地有一份软件用于开发调试；
+提交代码前需要下一份最新的代码验证；
+验证完后可能本地版本已经不是最新了，那么还需要下一份最新代码（至少一个git仓库）
+
+</note-content></text>
+  <last-change-date>2012-10-17T13:44:08.3708870+08:00</last-change-date>
+  <last-metadata-change-date>2012-10-17T13:44:08.3708870+08:00</last-metadata-change-date>
+  <create-date>2012-10-17T10:43:44.5667320+08:00</create-date>
+  <cursor-position>118</cursor-position>
+  <width>690</width>
+  <height>470</height>
+  <x>568</x>
+  <y>374</y>
+  <open-on-startup>False</open-on-startup>
+</note>

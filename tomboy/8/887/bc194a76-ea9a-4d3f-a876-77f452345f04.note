@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<note version="0.3" xmlns:link="http://beatniksoftware.com/tomboy/link" xmlns:size="http://beatniksoftware.com/tomboy/size" xmlns="http://beatniksoftware.com/tomboy">
+  <title>03/01/13</title>
+  <text xml:space="preserve"><note-content version="0.1">03/01/13
+
+<size:large>Task</size:large>
+
+
+<size:large>Achievement</size:large>
+
+
+<size:large>Message</size:large>
+
+[SW] Bug#: 	409856
+Summary: 	[WIFI hotspot]Mobile reboot after wifi hotspot is enabled for more than 2 hours with USB cable connected
+Product: 	SW.Viper_ATT
+
+[SW] Bug#: 	410484
+Summary: 	[Boot]Mobile reboot automatically after do some operations,like receive some push messages
+Product: 	SW.Viper_ATT
+
+[SW] Bug#: 	410501
+Summary: 	[Network]Mobile reboot and some menu lost after reboot automatically when select "LTE" network mode
+Product: 	SW.Viper_ATT
+
+
+
+@Guobing.Miao
+这里有几个bug请务必关注并协助一下，因为测试人员在美国，测试条件依赖at&amp;t的网络环境
+
+
+
+今后有些bug可能国内无法重现的，比较依赖于出差到美国的同事内抓取到完整有效的log，请多支持，谢谢
+
+抓取log的时候也抓一下ANR和tombstones（如果有）
+
+这份log很好很强大
+还能抓到tombstone或ANR吗？
+
+
+Viper globle
+
+分区表和处理脚本
+vendor/tct/viper/<link:internal>build</link:internal>/partition_load_pt/partition.xml
+boot_images/core/storage/tools/jsdcc/partition_load_pt/ptool.py
+
+python ptool.py -x partition.xml
+生成
+gpt_main0.bin #分区表，刷到flash开头处，手机代码从此处读取分区信息
+rawprogram0.xml #刷机用，每个分区精确的起始地址
+patch0.xml #根据实际flash的大小补上最后一个分区的大小
+
+
+内存映射
+boot_images/<link:internal>build</link:internal>/ms/targbaaaanaza.h
+另外可以看kernel的log，开头有内存使用信息
+
+
+
+Scribe5
+
+内存映射
+modem_proc/<link:internal>build</link:internal>/ms/targssnekolym.h
+
+
+在另一个bug上有kernel的log，两个bug应该是同一原因，已经转由其他组分析去了
+
+logcat重定向到/dev/kmsg
+
+
+
+
+
+
+
+
+
+
+</note-content></text>
+  <last-change-date>2013-03-01T16:03:07.1002580+08:00</last-change-date>
+  <last-metadata-change-date>2013-03-01T16:03:07.1002580+08:00</last-metadata-change-date>
+  <create-date>2013-03-01T09:05:11.0137070+08:00</create-date>
+  <cursor-position>1162</cursor-position>
+  <width>584</width>
+  <height>715</height>
+  <x>465</x>
+  <y>111</y>
+  <open-on-startup>False</open-on-startup>
+</note>

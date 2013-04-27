@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<note version="0.3" xmlns:link="http://beatniksoftware.com/tomboy/link" xmlns:size="http://beatniksoftware.com/tomboy/size" xmlns="http://beatniksoftware.com/tomboy">
+  <title>Build</title>
+  <text xml:space="preserve"><note-content version="0.1">Build
+
+<bold>scribe5</bold>
+
+./linux_build.sh scribe5 orange
+
+
+<bold>poppy</bold>
+
+
+./brcm_tools/scripts/brcm_builddist.sh --variant <link:broken>Acar10SecRef</link:broken> --mode user
+
+How to Download the modem code:
+git clone <link:url>git@172.16.11.162:quic/amss_8x30.git</link:url> -b jb_cdr
+
+
+<bold>viper</bold>
+
+Andriod build:
+source build/envsetup.sh
+lunch viper-user (for user software) or lunch viper-eng (for eng software)
+Modem build:
+cd amss_8x30
+./linux_build.sh viper globle
+
+
+<bold>spyder</bold>
+
+Dear all,
+
+Spyder project is now in jb_cdr, if any one want to compile Spyder use below command.
+
+get android source from git repository server:
+
+    repo init -u <link:url>git@172.16.11.162:quic/manifest</link:url>
+
+get modem source from git repository server:
+
+    git clone <link:url>git@172.16.11.162:quic/amss_8x30</link:url> -b jb_cdr
+
+Compile android part:
+
+   . build/envsetup.sh (or source build/envsetup.sh)
+   choosecombo 1 3 3 2 2
+ 
+Compile modem part:
+
+   before compile pls install TCTNBTools.bin (@smb://172.16.11.20/software/07_Middleware/02_Architecture/02_Tool/TCTNBTools.bin  you need root permission)
+   and make sure your <link:url>/bin/sh</link:url> -&gt; <link:url>/bin/bash</link:url>  (use ls -l <link:url>/bin/sh</link:url> to check)
+
+   ./linux_build.sh spyder globle
+
+All the develop follow our rules like scribe5 and viper. Thanks.
+
+
+Dear all,
+
+From now on, you can get the google original android source code on 172.16.11.162 for your reference.
+Gitweb: <link:url>http://172.16.11.162/gitweb-aosp/</link:url>
+clone one module: git clone <link:url>git@172.16.11.162:aosp/&lt;module</link:url>&gt; -b &lt;branch&gt;
+
+To repo sync the whole project, as the original manifest in google doesn't match our repo tool, we modify the manifest files in manifest repository. Currently, we only modify the manifest for andoird 4.2 branch.
+So for android 4.2, you can repo sync like that:
+repo init -u <link:url>git@172.16.11.162:aosp/platform/manifest</link:url> -b android-4.2_r1
+repo sync
+
+For these other android version, if you want repo sync all, you can follow the step below:
+repo init -u <link:url>git@172.16.11.162:aosp/platform/manifest</link:url> -b &lt;branch&gt;
+cd .repo
+modify manifest.xml: find fetch="..", replace with <link:url>fetch="git@172.16.11.162:aosp</link:url>"
+repo sync</note-content></text>
+  <last-change-date>2012-11-20T15:35:16.5595620+08:00</last-change-date>
+  <last-metadata-change-date>2012-11-20T15:35:16.5595620+08:00</last-metadata-change-date>
+  <create-date>2012-10-25T19:49:52.4022830+08:00</create-date>
+  <cursor-position>1165</cursor-position>
+  <width>528</width>
+  <height>691</height>
+  <x>0</x>
+  <y>0</y>
+  <tags>
+    <tag>system:notebook:tips</tag>
+  </tags>
+  <open-on-startup>False</open-on-startup>
+</note>

@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<note version="0.3" xmlns:link="http://beatniksoftware.com/tomboy/link" xmlns:size="http://beatniksoftware.com/tomboy/size" xmlns="http://beatniksoftware.com/tomboy">
+  <title>01/17/13</title>
+  <text xml:space="preserve"><note-content version="0.1">01/17/13
+
+<size:large>Task</size:large>
+
+
+<size:large>Achievement</size:large>
+
+
+<size:large>Message</size:large>
+护照
+
+是flash上的真实地址
+
+你的建议是说：
+
+我可以在做包的时候使用一个小地址，比如
+/sourceinputoffsetinflash=0x0
+/targetinputoffsetinflash=0x0
+
+然后在读写flash的函数
+RB_WriteBlock()
+RB_ReadImage()
+实现中加上相应的偏移，比如
+lseek64(info-&gt;emmc_fd, dwStartAddress + 0xe0000000, SEEK_SET);
+
+另外，目前7.*版本的UPG最大支持多大的参数？
+
+</note-content></text>
+  <last-change-date>2013-01-17T16:59:39.0972520+08:00</last-change-date>
+  <last-metadata-change-date>2013-01-17T16:59:39.0972520+08:00</last-metadata-change-date>
+  <create-date>2013-01-17T09:17:27.3669760+08:00</create-date>
+  <cursor-position>57</cursor-position>
+  <width>450</width>
+  <height>360</height>
+  <x>706</x>
+  <y>294</y>
+  <open-on-startup>False</open-on-startup>
+</note>

@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<note version="0.3" xmlns:link="http://beatniksoftware.com/tomboy/link" xmlns:size="http://beatniksoftware.com/tomboy/size" xmlns="http://beatniksoftware.com/tomboy">
+  <title>03/28/13</title>
+  <text xml:space="preserve"><note-content version="0.1">03/28/13
+
+<size:large>Task</size:large>
+
+<size:huge>	IQ_CFG_INT_TIME_SLICE,				/**&lt; The maximum wall-clock time in milliseconds that the
+											Agent should spend in calls to IQBackend_Execute(). In
+											general, and in preemptive environments in particular,
+											the Agent cannot guarantee to enforce the limit, but it
+											will attempt to do so.  Integrations in preemptively
+											tasked environments and non-file I/O performed in
+											separate threads may safely return 0x7FFFFFFF for an
+											effectively infinite time slice.  Implementations which
+											do not <link:internal>support</link:internal></size:huge><size:huge> the key, or which <link:internal>support</link:internal></size:huge><size:huge> the key but
+											return a value less than 100, will cause the Agent to use
+											its historical 100ms default. Regardless of the value,
+											the Agent will return from IQBackend_Execute() if it has
+											no pending work to perform. */</size:huge></note-content></text>
+  <last-change-date>2013-03-28T21:08:48.0515110+08:00</last-change-date>
+  <last-metadata-change-date>2013-03-28T21:08:48.0515110+08:00</last-metadata-change-date>
+  <create-date>2013-03-28T14:17:05.4985830+08:00</create-date>
+  <cursor-position>351</cursor-position>
+  <width>450</width>
+  <height>360</height>
+  <x>187</x>
+  <y>79</y>
+  <open-on-startup>False</open-on-startup>
+</note>
