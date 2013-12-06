@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<sync revision="1079" server-id="3f9707a5-d679-4c21-80d3-cb72e3f74243">
+<sync revision="986" server-id="3f9707a5-d679-4c21-80d3-cb72e3f74243">
   <note id="16323a5c-abd0-4a23-b566-a77860fc141f" rev="521" />
   <note id="df269c9a-1f5c-4f3b-bee5-666858eb50cf" rev="525" />
   <note id="c9ea03a2-aa8a-4e71-95a0-2b4ea3de9007" rev="525" />
@@ -12,7 +12,41 @@
   <note id="a7e1ba07-eee8-4b9f-a6d7-77c4086dd228" rev="753" />
   <note id="196eaee5-ad60-4cab-ad76-e29382414492" rev="768" />
   <note id="f58f3b37-b85c-4cd5-a3ef-b3de565b571d" rev="770" />
+  <note id="d1e1c02e-0ba4-4daf-ba71-eaf309dcf9d2" rev="771" />
+  <note id="f9561ae5-4fdc-480c-9ed4-b9a049463a9c" rev="773" />
+  <note id="70b5a0d8-f0d8-4390-bd7a-e997f03e20c0" rev="774" />
+  <note id="cf53d94f-3a42-46d1-8293-bd43504d6e94" rev="776" />
+  <note id="fd7ace0f-34be-4e0c-a1c2-b7c1a3925901" rev="780" />
+  <note id="8e128745-6287-4400-85bf-ec9441b2d017" rev="781" />
+  <note id="1284e3c0-74d3-4160-8f08-cd9bf3d7e4a7" rev="782" />
+  <note id="1b178cf9-1d06-4882-a2ff-d0f4ee2515fe" rev="796" />
+  <note id="a8e9e5f5-68e1-4a1d-b5e2-323d45b1de97" rev="798" />
+  <note id="703b67ce-606b-422f-a69c-67f4e4620a3d" rev="799" />
+  <note id="176bc840-4e41-4030-a5b5-aa530d657723" rev="803" />
+  <note id="965fc96f-06b5-482c-96dd-a1c45bcd913d" rev="805" />
+  <note id="d5e0cde7-0899-41e0-b33b-88fb02a1823b" rev="806" />
+  <note id="88c50849-d1b3-4042-982f-d811aa11d127" rev="811" />
+  <note id="c1abf30f-856e-4b1a-89f3-79a7285dc933" rev="813" />
+  <note id="a83b4cac-0d1c-4168-9ccd-d4738ddb1402" rev="814" />
+  <note id="47fc05a5-064e-45b6-bd8e-32bcbbb546de" rev="815" />
   <note id="97744a80-e915-4ce4-947f-df66de7e1264" rev="816" />
+  <note id="b2bf9831-af43-4a23-bd95-316e4e35c011" rev="817" />
+  <note id="f7796539-bd2b-4cc1-8fce-8ce05caaa601" rev="818" />
+  <note id="ce2d33fe-fb4e-447b-b710-882d2eff5eb1" rev="820" />
+  <note id="9cdbb7f6-71c2-4f5a-b714-87dda3022879" rev="821" />
+  <note id="fc398493-4706-4f01-bb1a-01204831a23e" rev="822" />
+  <note id="90075bca-ece9-4c2b-995f-0077b9144668" rev="823" />
+  <note id="2c7cf4e3-7f02-4dc5-a69b-ef72b2e70c62" rev="826" />
+  <note id="d2f855c9-73fb-4825-b613-48dfd13e61aa" rev="827" />
+  <note id="f12a0b0b-5a1c-4eda-a6a3-e662a070b6c2" rev="828" />
+  <note id="976d3be2-70d1-496d-952a-df9868ab2312" rev="829" />
+  <note id="1b877428-94aa-4b1b-a699-7c2841ab5c79" rev="830" />
+  <note id="56fbd219-3d18-42c4-a5d3-a3ac2beaccb7" rev="833" />
+  <note id="057490d2-dfe3-49c0-ad7d-92eb9bbf9c1f" rev="834" />
+  <note id="c62a2455-9687-4fc0-8942-a1077fef7ed9" rev="835" />
+  <note id="fc60a445-fc99-4099-8179-7a2dbe4d3935" rev="836" />
+  <note id="a864a128-e8d4-45c9-bec1-4bc07c3e5d5c" rev="837" />
+  <note id="6b330e17-a52c-4e38-b327-6d198eccbbfc" rev="839" />
   <note id="baf6aaa7-30ee-4c06-b074-a9d47ccfe4e6" rev="840" />
   <note id="903d864c-b06e-45d9-bd90-f64a5d1dea15" rev="842" />
   <note id="410bbcf0-b6fa-4fe7-bc88-e3bfddcc68b5" rev="849" />
@@ -99,90 +133,4 @@
   <note id="21cd830f-3e2a-485b-a6f6-012649490d9d" rev="984" />
   <note id="c3138fad-803e-4d24-9af6-a7fae80be995" rev="985" />
   <note id="86848c6b-2bd9-4af7-acae-ffeba9166b72" rev="986" />
-  <note id="f197c107-0e27-4ab2-afee-1674926a71bf" rev="987" />
-  <note id="a64c273f-00ca-4f4a-bdf3-174f3f5c1278" rev="988" />
-  <note id="53d1a422-36dc-4dff-ba1e-65dc5eece664" rev="989" />
-  <note id="c9baae3a-ce02-45a7-a20d-b2664b785494" rev="990" />
-  <note id="9b0ac0a2-4d7c-48fe-bcb7-651450cb9f0d" rev="991" />
-  <note id="8e7e5093-4a49-4c88-af1f-c3f416db8b79" rev="992" />
-  <note id="91e0934e-698b-4e95-b565-2f18cd1e718b" rev="993" />
-  <note id="ba69f6d9-7166-4fea-b7df-510a24d25316" rev="994" />
-  <note id="710643a7-47dd-4397-94f2-751d56e1838a" rev="995" />
-  <note id="2de87df1-0532-4046-9ae2-f3d8f505d070" rev="996" />
-  <note id="64f14fad-7f78-4a25-974b-a44a1d2f5fbe" rev="997" />
-  <note id="dbeaa525-9e65-4126-8624-7f917bb839ab" rev="998" />
-  <note id="8fc5c483-51ae-4a7e-842f-0045e828ad09" rev="999" />
-  <note id="9abd29c9-18b8-4945-aca8-40ab989eb77a" rev="1000" />
-  <note id="7cef0d80-ea95-4dc6-b4fa-4f6228cd932e" rev="1001" />
-  <note id="89c4770c-c4d2-48b9-8e0c-672b810b8e99" rev="1002" />
-  <note id="d41f388a-7f50-46f3-9e26-daa35cf4fda3" rev="1003" />
-  <note id="207fde10-eafd-4c9f-bdbf-749c84d6c648" rev="1004" />
-  <note id="e5e816d3-ad21-4e4c-b6a8-d6c6d64f1e4d" rev="1005" />
-  <note id="7cafd0cf-3428-4789-87ec-5c0a429e1219" rev="1006" />
-  <note id="10a52729-11c3-476b-8274-013a6b9277cb" rev="1007" />
-  <note id="98c55f6b-0286-4fd1-a78a-39bd5a722f6f" rev="1008" />
-  <note id="6c05d1f7-2b90-4624-83d2-30e27346fc01" rev="1009" />
-  <note id="5cc33ccc-e41a-4f46-a710-34b2a6b6d87e" rev="1010" />
-  <note id="b03a10fa-69b6-4b94-9b29-c65c1d551727" rev="1011" />
-  <note id="5475141d-5921-46e6-8c9b-c7c76edfe4a9" rev="1012" />
-  <note id="f7a38aaa-3f8c-4e73-9390-987354d31937" rev="1013" />
-  <note id="958d811d-821b-4fa8-a7f9-745431441be1" rev="1014" />
-  <note id="97cf54f7-12d3-4dd0-8c48-6c7948c5ea0e" rev="1015" />
-  <note id="921ed1c8-a063-4017-b2b8-5b9f47503112" rev="1016" />
-  <note id="9874ea65-bf47-43c6-915f-cd66e4f8a55e" rev="1017" />
-  <note id="57812f22-fe21-4a87-86c4-dbc0cadc66e3" rev="1018" />
-  <note id="ae641bcc-38f6-46ed-ab9b-857dc4698aa2" rev="1019" />
-  <note id="34b2e26e-7a0f-4c3c-87e4-9723a96a963c" rev="1020" />
-  <note id="a22716af-b97a-40cb-a5f8-ea88a4fc13d8" rev="1021" />
-  <note id="3ec23e67-4b19-489b-9858-105ef7630831" rev="1022" />
-  <note id="ce9849ee-8302-4ee9-88af-3c8e9bb99c89" rev="1023" />
-  <note id="f63c2712-fa9a-4868-835c-128f9c01afe9" rev="1024" />
-  <note id="92bccc8e-3886-42fd-9af9-7437ef853f79" rev="1025" />
-  <note id="4c00186a-1993-4de9-9d1c-6bc65227ea34" rev="1026" />
-  <note id="3fec2d3f-f9a6-4620-a22c-3149ad32930a" rev="1027" />
-  <note id="5e81f46e-8f66-4cae-a19e-ffba3ed39b94" rev="1028" />
-  <note id="d841ec43-39b2-4dd1-bbdf-f0ca6e91525d" rev="1029" />
-  <note id="2751439c-e4b2-42e8-93b2-03833358f98a" rev="1030" />
-  <note id="91cd357a-e1bb-4007-a056-6eccceb63e08" rev="1031" />
-  <note id="4a6ecd39-14fc-4d96-8c21-5c880f29ed77" rev="1032" />
-  <note id="988486b7-9a31-41bf-8ad6-d60a072dd8d5" rev="1033" />
-  <note id="8a4cae0d-48de-45fb-aaf2-1e831c750a86" rev="1034" />
-  <note id="c31dcc9d-5ed2-443e-ab09-74f4ce2895cf" rev="1035" />
-  <note id="fe87802b-0921-4946-9e6e-9c80aed8b6f0" rev="1036" />
-  <note id="ed6a68ec-ed66-4f2c-95c9-253e96c97ed7" rev="1037" />
-  <note id="5d1c55c2-9cb7-464e-b061-87a05cd8156e" rev="1038" />
-  <note id="fdc62fc0-a2d9-427f-b7ec-4b0a583fed45" rev="1040" />
-  <note id="6ca0f730-caf7-4809-85fc-35f00782153b" rev="1044" />
-  <note id="74094696-c17f-432e-96e7-24945e8f3582" rev="1044" />
-  <note id="af1c48e5-373e-4ab2-ae7f-22ed2dce406a" rev="1045" />
-  <note id="0d667bcc-3b68-4e2d-b2b2-1bb06bc9ab20" rev="1046" />
-  <note id="f88f7f24-c9f9-4d60-ba13-cad817e96990" rev="1047" />
-  <note id="4c37ac6c-8675-41c5-a9dc-bcb5b5e027cc" rev="1048" />
-  <note id="61a7b21f-d98d-4700-94ea-6a07c3f1576c" rev="1049" />
-  <note id="2e9fe5ae-e3fe-41ad-afc9-695d544c1cad" rev="1050" />
-  <note id="6b918f16-7cad-474f-b9ea-7ec2820b02f1" rev="1051" />
-  <note id="38f34ae7-2b69-420b-8010-61f5836897e8" rev="1052" />
-  <note id="7d0eae98-4c32-40e1-ba31-9f5aecfb04a7" rev="1053" />
-  <note id="fd8057e8-d965-4107-a6b4-440fa34573bd" rev="1054" />
-  <note id="da454816-b717-406c-8088-af0769922c82" rev="1055" />
-  <note id="27cb69aa-0269-4b7e-aea7-940bd961cf33" rev="1056" />
-  <note id="b9140753-0d2a-48c0-ac3d-171a10778e7a" rev="1057" />
-  <note id="51c0eb87-7dfa-49ef-b563-fe55ab5641b6" rev="1058" />
-  <note id="477b0ecd-4cd6-47b0-8d91-530b64c99f8e" rev="1059" />
-  <note id="c71f16da-3d85-43d0-a867-373fe99bd175" rev="1060" />
-  <note id="76cbf0ab-bed0-4dec-9e9b-0c47da8cbd2d" rev="1061" />
-  <note id="377b7e6b-61db-48ea-acd8-84ddf66e8de5" rev="1062" />
-  <note id="c1f1c1da-a63d-4f16-a95d-d2c981cb62ba" rev="1067" />
-  <note id="d6814ba2-8ebc-48c3-aea2-6af4019ab634" rev="1068" />
-  <note id="6a83e8c5-5709-4ea3-b60c-82811f2c0813" rev="1069" />
-  <note id="c6a92040-0942-40d4-b1d9-ac625eb53bc8" rev="1070" />
-  <note id="e05374f1-327f-4c10-877c-077035208f51" rev="1071" />
-  <note id="edb39ffc-2298-4ba0-82b1-ae1bf6a1f638" rev="1072" />
-  <note id="c1b47a6e-84b2-40a0-946c-95f3e1bc7688" rev="1073" />
-  <note id="8554070d-aeea-49e3-bce4-bca6d1cadb0d" rev="1074" />
-  <note id="1c5d7575-882d-420c-bdbc-dfc5c02197cb" rev="1075" />
-  <note id="dbb6a17a-393a-41d3-a52b-67b82cba01fb" rev="1076" />
-  <note id="daf6a207-fb20-413f-9e0a-5db5bc69316a" rev="1077" />
-  <note id="7963f9ef-0798-44b9-87f0-285c16afc861" rev="1078" />
-  <note id="a94b3010-3883-4035-a5aa-ea55816e6d80" rev="1079" />
 </sync>

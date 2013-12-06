@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<note version="0.3" xmlns:link="http://beatniksoftware.com/tomboy/link" xmlns:size="http://beatniksoftware.com/tomboy/size" xmlns="http://beatniksoftware.com/tomboy">
+  <title>04/29/13</title>
+  <text xml:space="preserve"><note-content version="0.1">04/29/13
+
+<size:large>Task</size:large>
+
+
+<size:large>Achievement</size:large>
+1 modem
+2 sbl1
+3 sbl2
+4 sbl3
+5 aboot
+6 rpm
+7 boot
+8 tz
+9 pad
+10 modemst1
+11 modemst2
+12 system
+13 userdata
+14 persist
+15 cache
+16 misc
+17 recovery
+18 fsg
+19 ssd
+20 sbl3bk
+21 abootbk
+22 tunning
+23 traceability
+<size:large>Message</size:large>
+for ((i=16; i&lt;=23; ++i)); do dd if=/dev/sdc$i of=sdc$i.bin;  done
+mount -t vfat -o loop 4/sdc1.bin m4/
+for ((i=1; i&lt;=11; ++i)); do dd if=/dev/sdc$i of=sdc$i.bin;  done
+
+</note-content></text>
+  <last-change-date>2013-04-30T13:46:46.0029820+08:00</last-change-date>
+  <last-metadata-change-date>2013-04-30T13:46:46.0029820+08:00</last-metadata-change-date>
+  <create-date>2013-04-29T09:16:03.5484440+08:00</create-date>
+  <cursor-position>237</cursor-position>
+  <width>450</width>
+  <height>360</height>
+  <x>187</x>
+  <y>79</y>
+  <open-on-startup>False</open-on-startup>
+</note>

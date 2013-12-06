@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<note version="0.3" xmlns:link="http://beatniksoftware.com/tomboy/link" xmlns:size="http://beatniksoftware.com/tomboy/size" xmlns="http://beatniksoftware.com/tomboy">
+  <title>05/30/13</title>
+  <text xml:space="preserve"><note-content version="0.1">05/30/13
+
+<size:large>Task</size:large>
+补卡，其他保存不变。
+保持
+git push <link:url>ssh://he.zhang@172.16.11.162:29418/quic/kernel/msm.git</link:url> HEAD:refs/for/jb22_cdr
+
+git push <link:url>ssh://he.zhang@172.16.11.162:29418/quic/platform/system/core.git</link:url> HEAD:refs/for/jb22_cdr
+
+
+git push <link:url>ssh://he.zhang@172.16.11.162:29418/quic/platform/frameworks/base.git</link:url> HEAD:refs/for/jb22_cdr
+
+git push <link:url>ssh://he.zhang@172.16.11.162:29418/quic/platform/vendor/tct/source.git</link:url> HEAD:refs/for/jb22_cdr
+
+git clone <link:url>git@172.16.11.162:quic/platform/vendor/tct/source.git</link:url>  -b jb22_cdr
+
+git clone <link:url>git@172.16.11.162:quic/platform/frameworks/base.git</link:url>  -b jb22_cdr
+
+git clone <link:url>git@172.16.11.162:quic/kernel/msm.git</link:url>  -b jb22_cdr
+
+
+frameworks/base
+<size:large>Achievement</size:large>
+
+
+<size:large>Message</size:large>
+</note-content></text>
+  <last-change-date>2013-06-03T10:36:35.1674100+08:00</last-change-date>
+  <last-metadata-change-date>2013-06-03T10:36:35.1674100+08:00</last-metadata-change-date>
+  <create-date>2013-05-30T13:20:29.7374510+08:00</create-date>
+  <cursor-position>26</cursor-position>
+  <width>450</width>
+  <height>360</height>
+  <x>0</x>
+  <y>0</y>
+  <open-on-startup>False</open-on-startup>
+</note>
